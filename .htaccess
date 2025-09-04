@@ -21,7 +21,7 @@ RewriteRule . /AASWJobBoard/index.php [L]
 
 #Block PHP execution in /wp-content/uploads/
 <Files *.php>
-  deny from all
+  #deny from all
 </Files>
 
 # END WordPress
