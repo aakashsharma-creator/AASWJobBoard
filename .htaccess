@@ -13,4 +13,15 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /AASWJobBoard/index.php [L]
 </IfModule>
 
+#Protect sensitive files
+<Files wp-config.php>
+  order allow,deny
+  deny from all
+</Files>
+
+#Block PHP execution in /wp-content/uploads/
+<Files *.php>
+  deny from all
+</Files>
+
 # END WordPress

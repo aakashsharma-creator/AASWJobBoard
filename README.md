@@ -9,7 +9,7 @@ To set up the AASW Jobs Board WordPress project locally:
 1. **Clone the repository**:
    ```bash
 git clone https://github.com/aakashsharma-creator/AASWJobBoard.git
-
+```
  **Initialize Git (if not already done)**:
    If you didn't clone the repo and are setting up Git in an existing WordPress project folder, navigate to your WordPress project folder in the terminal and run:
    ```bash
