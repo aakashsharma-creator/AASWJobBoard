@@ -1,0 +1,35 @@
+/* #root {
+  padding: 20px;
+  font-family: inherit;
+}
+
+#root input,
+#root select {
+  font-size: 13px;
+  line-height: 1.5;
+  border-radius: 2px;
+  border: 1px solid #ccd0d4;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#root button {
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 3px;
+  border: none;
+  background: #007cba;
+  color: white;
+  cursor: pointer;
+}
+
+#root button:hover {
+  background: #006799;
+}
+
+#root h1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+} */

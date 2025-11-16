@@ -1,0 +1,262 @@
+<?php
+// Enqueue custom login JS
+add_action('wp_enqueue_scripts', function () {
+    wp_enqueue_script(
+        'custom-login-script',
+        get_stylesheet_directory_uri() . '/js/custom-login.js',
+        array('jquery'),
+        '1.0.8',
+        true
+    );
+
+    wp_localize_script('custom-login-script', 'customLoginObj', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'default_redirect' => home_url('/')
+    ));
+});
+
+// Prevent caching of AJAX responses
+$ajax_actions = ['custom_ajax_login', 'resend_otp', 'verify_otp'];
+foreach ($ajax_actions as $action) {
+    add_action("wp_ajax_nopriv_$action", 'nocache_headers');
+    add_action("wp_ajax_$action", 'nocache_headers');
+}
+
+// AJAX login handler
+add_action('wp_ajax_nopriv_custom_ajax_login', 'custom_ajax_login');
+add_action('wp_ajax_custom_ajax_login', 'custom_ajax_login');
+
+
+add_filter('wp_mail_from', function ($original_email_address) {
+    return 'info@aaswjobstaging.com'; // Replace with your email
+});
+
+add_filter('wp_mail_from_name', function ($original_from_name) {
+    return 'AASW JOBS'; // Replace with your name
+});
+function custom_ajax_login()
+{
+    $username = isset($_POST['username']) ? sanitize_text_field($_POST['username']) : '';
+    $password = isset($_POST['password']) ? wp_unslash($_POST['password']) : '';
+    $remember = (!empty($_POST['remember']) && $_POST['remember'] === 'forever');
+    $selected_tab_role = isset($_POST['role']) ? sanitize_text_field($_POST['role']) : '';
+
+    if (empty($username) || empty($password)) {
+        wp_send_json_error(['message' => 'Please enter both email and password.']);
+    }
+
+    $creds = [
+        'user_login' => $username,
+        'user_password' => $password,
+        'remember' => $remember
+    ];
+
+    $user = wp_signon($creds, is_ssl());
+
+    if (is_wp_error($user)) {
+        $raw_message = strip_tags($user->get_error_message());
+        $clean_message = stripos($raw_message, 'Invalid username') !== false ?
+            'No account found with this email address.' :
+            (stripos($raw_message, 'incorrect password') !== false ?
+                'Incorrect password. Please try again.' : 'Login failed. Please check your credentials.');
+        wp_send_json_error(['message' => $clean_message]);
+    }
+
+    // Check user role
+    $roles = $user->roles;
+    $expected_role = ($selected_tab_role === 'locum') ? 'candidate' : $selected_tab_role;
+    if (!in_array($expected_role, $roles)) {
+        wp_clear_auth_cookie();
+        wp_logout();
+        wp_send_json_error(['message' => 'Your account role does not match the selected login type.']);
+    }
+
+    // Generate OTP
+    $otp = rand(100000, 999999);
+
+    // Store OTP, attempts, and temp login data in user meta
+    update_user_meta($user->ID, '_login_otp', $otp);
+    update_user_meta($user->ID, '_login_otp_expiration', time() + 300); // 5 min expiry
+    update_user_meta($user->ID, '_temp_login_data', [
+        'remember' => $remember,
+        'role' => $expected_role
+    ]);
+    update_user_meta($user->ID, '_login_attempts', 0);
+
+    // Send OTP email
+    send_otp_email($user->user_email, $otp);
+
+    wp_logout();
+
+    wp_send_json_success([
+        'message' => 'Please enter the OTP sent to your email.',
+        'otp_required' => true,
+        'email' => $username
+    ]);
+}
+
+// Send OTP email
+function send_otp_email($email, $otp)
+{
+    if (!function_exists('wp_mail')) {
+        error_log('wp_mail function not available in send_otp_email.');
+        $new_nonce = wp_create_nonce('custom-login-nonce');
+        wp_send_json_error(array(
+            'message' => 'Email service unavailable. Please try again later.',
+            'new_nonce' => $new_nonce
+        ));
+        return;
+    }
+
+$subject = 'Your AASW Jobs Login OTP';
+$message = '
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Login OTP</title>
+  <style>
+    @media only screen and (max-width: 600px) {
+      .container { width: 100% !important; padding: 10px !important; }
+      .otp-box { font-size: 24px !important; letter-spacing: 3px !important; }
+      .cta-button { padding: 10px 20px !important; font-size: 16px !important; }
+      .footer-links a { display: block !important; margin: 5px 0 !important; }
+      .header-image img { width: 100% !important; height: auto !important; }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Arial, sans-serif; background-color: #f0f2f5; line-height: 1.6;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f0f2f5; padding: 20px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" class="container" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); overflow: hidden;">
+          
+          <!-- ✅ FULL-WIDTH BANNER IMAGE -->
+          <tr>
+            <td class="header-image" style="padding: 0; margin: 0; line-height: 0; border: none;">
+              <img src="https://aaswjobstaging.wpenginepowered.com/wp-content/themes/hello-elementor-child/images/banner_imgg.png"
+                   alt="AASW Jobs Banner"
+                   style="display: block; width: 100%; height: auto; border: 0; line-height: 0; margin: 0; padding: 0;">
+            </td>
+          </tr>
+
+          <!-- ✅ EMAIL CONTENT -->
+          <tr>
+            <td style="padding: 40px 30px; text-align: center;">
+              <h2 style="color: #1a2a44; font-size: 24px; margin: 0 0 20px; font-weight: 600;" role="heading" aria-level="2">
+                Login Verification Code
+              </h2>
+              <p style="font-size: 16px; color: #4a5c78; margin: 0 0 25px;">
+                Your one-time password (OTP) is provided below. Enter it to complete your login.
+              </p>
+              <div class="otp-box" style="font-size: 36px; font-weight: 700; color: #0066A1; letter-spacing: 6px; background-color: #f8f9fa; padding: 15px 20px; border-radius: 8px; display: inline-block; margin: 20px 0;" role="alert" aria-live="assertive">
+                ' . esc_html($otp) . '
+              </div>
+              <p style="font-size: 14px; color: #4a5c78; margin: 0 0 20px;">
+                This OTP is valid for <strong>5 minutes</strong>. Do not share it with anyone.
+              </p>
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+';
+
+
+
+    $headers = array('Content-Type: text/html; charset=UTF-8');
+    try {
+        $sent = wp_mail($email, $subject, $message, $headers);
+        error_log('Email sent to ' . $email . ': ' . ($sent ? 'Success' : 'Failed') . ', OTP: ' . $otp);
+    } catch (Exception $e) {
+        error_log('Exception in wp_mail: ' . $e->getMessage());
+        $new_nonce = wp_create_nonce('custom-login-nonce');
+        wp_send_json_error(array(
+            'message' => 'Failed to send OTP email. Please try again.',
+            'new_nonce' => $new_nonce
+        ));
+    }
+}
+// Resend OTP
+add_action('wp_ajax_nopriv_resend_otp', 'resend_otp');
+add_action('wp_ajax_resend_otp', 'resend_otp');
+
+function resend_otp()
+{
+    $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+    if (empty($email))
+        wp_send_json_error(['message' => 'Invalid request.']);
+
+    $user = get_user_by('email', $email);
+    if (!$user)
+        wp_send_json_error(['message' => 'No user found.']);
+
+    $temp_data = get_user_meta($user->ID, '_temp_login_data', true);
+    if (!$temp_data)
+        wp_send_json_error(['message' => 'Session expired. Please login again.']);
+
+    $otp = rand(100000, 999999);
+    update_user_meta($user->ID, '_login_otp', $otp);
+    update_user_meta($user->ID, '_login_otp_expiration', time() + 300); // 5 min expiry
+    update_user_meta($user->ID, '_login_attempts', 0);
+
+    send_otp_email($user->user_email, $otp);
+
+    wp_send_json_success(['message' => 'New OTP sent to your email.']);
+}
+
+// Verify OTP
+add_action('wp_ajax_nopriv_verify_otp', 'verify_otp');
+add_action('wp_ajax_verify_otp', 'verify_otp');
+
+function verify_otp()
+{
+    $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+    $otp = isset($_POST['otp']) ? intval($_POST['otp']) : 0;
+
+    if (empty($email) || empty($otp))
+        wp_send_json_error(['message' => 'Please enter the OTP.']);
+
+    $user = get_user_by('email', $email);
+    if (!$user)
+        wp_send_json_error(['message' => 'No user found.']);
+
+    $stored_otp = get_user_meta($user->ID, '_login_otp', true);
+    $expiration = get_user_meta($user->ID, '_login_otp_expiration', true);
+    $attempts = (int) get_user_meta($user->ID, '_login_attempts', true);
+
+    if (!$stored_otp || !$expiration || time() > $expiration) {
+        wp_send_json_error(['message' => 'OTP expired. Please login again.']);
+    }
+
+    if ($stored_otp != $otp) {
+        $attempts++;
+        update_user_meta($user->ID, '_login_attempts', $attempts);
+        $attempts_left = max(0, 5 - $attempts);
+        wp_send_json_error(['message' => 'Invalid OTP. Attempts left: ' . $attempts_left]);
+    }
+
+    $temp_data = get_user_meta($user->ID, '_temp_login_data', true);
+    if (!$temp_data)
+        wp_send_json_error(['message' => 'Session expired. Please login again.']);
+
+    // Set auth cookie
+    wp_set_current_user($user->ID);
+    wp_set_auth_cookie($user->ID, $temp_data['remember']);
+
+    // Clean up user meta
+    delete_user_meta($user->ID, '_login_otp');
+    delete_user_meta($user->ID, '_login_otp_expiration');
+    delete_user_meta($user->ID, '_temp_login_data');
+    delete_user_meta($user->ID, '_login_attempts');
+
+    $redirect = $temp_data['role'] === 'employer' ? home_url('/employer-dashboard/') : home_url('/locum-dashboard/');
+
+    wp_send_json_success(['redirect' => $redirect, 'message' => 'Login successful!']);
+}
+?>

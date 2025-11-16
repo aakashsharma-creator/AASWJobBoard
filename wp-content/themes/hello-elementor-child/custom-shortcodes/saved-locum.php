@@ -1,0 +1,912 @@
+<?php
+// Exit if accessed directly
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+function my_saved_locum()
+{
+    ob_start(); ?>
+    <style>
+        @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+        @import url("https://fonts.googleapis.com/css?family=Nunito+Sans:400,500,700,600|Raleway:600|Poppins:600|Inter:var(--body-medium-400-font-weight)");
+    </style>
+
+    <link rel="stylesheet" type="text/css"
+        href="<?php echo get_stylesheet_directory_uri(); ?>/custom-shortcodes/css/saved-locum.css">
+
+        <style>
+                .bookmark-btn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: transparent !important; /* Force full transparency */
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0s;
+  -webkit-tap-highlight-color: transparent; /* Removes mobile tap flash */
+}
+
+.bookmark-btn:focus,
+.bookmark-btn:active {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.bookmark-btn.bookmark-loading .bookmark-icon {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Spinner */
+.bookmark-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top-color: #005f83;
+  border-right-color: #005f83;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  opacity: 0;
+  visibility: hidden;
+  background: transparent !important;
+}
+
+.bookmark-btn.bookmark-loading::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+        </style>
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <a href="<?php echo esc_url(site_url('/search-for-locum')); ?>" class="tab">Search Locum</a>
+            <button class="tab active">Saved Locum</button>
+        </div>
+
+        <div class="search-for-locum">
+            <div class="main-content">
+                <div class="search-container">
+                    <div class="search-header">
+                        <div class="search-input">
+                            <input type="text" name="search_input" placeholder="Search with keyword..." />
+                        </div>
+                        <div class="filters-row">
+                            <!-- Job Type (Availability) -->
+                            <div class="filter-select">
+                                <div class="multiselect-wrapper">
+                                    <div class="multiselect-trigger" data-target="job_listing_type">
+                                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/Frame_recolored.png" alt="" />
+                                        <span class="selection-text">Availabilities</span>
+                                    </div>
+                                    <div class="multiselect-dropdown">
+                                        <div class="multiselect-search">
+                                            <input type="text" placeholder="Search Availabilities..." class="multiselect-search-input">
+                                        </div>
+                                        <div class="multiselect-options">
+                                            <div class="multiselect-option">
+                                                <input type="checkbox" id="job_type_full_time" value="full_time">
+                                                <label for="job_type_full_time">Full Time</label>
+                                            </div>
+                                            <div class="multiselect-option">
+                                                <input type="checkbox" id="job_type_part_time" value="part_time">
+                                                <label for="job_type_part_time">Part Time</label>
+                                            </div>
+                                            <div class="multiselect-option">
+                                                <input type="checkbox" id="job_type_contract" value="contract">
+                                                <label for="job_type_contract">Contract</label>
+                                            </div>
+                                        </div>
+                                        <div class="multiselect-actions">
+                                            <button class="multiselect-btn reset">Reset</button>
+                                            <button class="multiselect-btn apply">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Location -->
+                            <div class="filter-select">
+                                <div class="multiselect-wrapper">
+                                    <div class="multiselect-trigger" data-target="job_location_category">
+                                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/fi_map-pin.png" alt="" />
+                                        <span class="selection-text">All Locations</span>
+                                    </div>
+                                    <div class="multiselect-dropdown">
+                                        <div class="multiselect-search">
+                                            <input type="text" placeholder="Search locations..." class="multiselect-search-input">
+                                        </div>
+                                        <div class="multiselect-options">
+                                            <?php
+                                            $terms = get_terms([
+                                                'taxonomy' => 'job_location_category',
+                                                'hide_empty' => false,
+                                            ]);
+                                            if (!empty($terms) && !is_wp_error($terms)) {
+                                                foreach ($terms as $term) {
+                                                    echo '<div class="multiselect-option">';
+                                                    echo '<input type="checkbox" id="location_' . esc_attr($term->slug) . '" value="' . esc_attr($term->name) . '">';
+                                                    echo '<label for="location_' . esc_attr($term->slug) . '">' . esc_html($term->name) . '</label>';
+                                                    echo '</div>';
+                                                }
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="multiselect-actions">
+                                            <button class="multiselect-btn reset">Reset</button>
+                                            <button class="multiselect-btn apply">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sector -->
+                            <div class="filter-select">
+                                <div class="multiselect-wrapper">
+                                    <div class="multiselect-trigger" data-target="sector">
+                                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/fi_layers.png" alt="" />
+                                        <span class="selection-text">Sectors</span>
+                                    </div>
+                                    <div class="multiselect-dropdown">
+                                        <div class="multiselect-search">
+                                            <input type="text" placeholder="Search sectors..." class="multiselect-search-input">
+                                        </div>
+                                        <div class="multiselect-options">
+                                            <?php
+                                            $all_sectors = [
+                                                'Academia',
+                                                'Accountant',
+                                                'Administration',
+                                                'Aged Care',
+                                                'Alcohol, tobacco and other drug',
+                                                'Assessments',
+                                                'Audits / accreditations',
+                                                'Business Development',
+                                                'Case Management',
+                                                'Child',
+                                                'Child protection',
+                                                'Community & Development',
+                                                'Consultancy',
+                                                'Corrections',
+                                                'Counselling / Therapy',
+                                                'Culturally and Linguistically Diverse',
+                                                'Cyber Security',
+                                                'Defence',
+                                                'Digital Content',
+                                                'Disability',
+                                                'Eating disorders',
+                                                'Education',
+                                                'Emergency Care',
+                                                'Employee Assistance Provider (EAP)',
+                                                'Ethical / Legal / Regulatory Compliance',
+                                                'Event management',
+                                                'Families/Carers',
+                                                'Family violence',
+                                                'Health',
+                                                'Hospital',
+                                                'Housing',
+                                                'Income Support',
+                                                'Infants',
+                                                'Management / Leadership',
+                                                'Marketing / Communications',
+                                                'Mental Health',
+                                                'Palliative Care / End of Life',
+                                                'Policy / Advocacy',
+                                                'Project Management',
+                                                'Research',
+                                                'Sexual assault',
+                                                'Social Worker',
+                                                'Supervision',
+                                                'Training',
+                                                'Trauma',
+                                                'Veterans',
+                                                'Women/Children',
+                                                'Youth'
+                                            ];
+                                            foreach ($all_sectors as $sector) {
+                                                $id = 'sector_' . sanitize_title($sector);
+                                                echo '<div class="multiselect-option">';
+                                                echo '<input type="checkbox" id="' . esc_attr($id) . '" value="' . esc_attr($sector) . '">';
+                                                echo '<label for="' . esc_attr($id) . '">' . esc_html($sector) . '</label>';
+                                                echo '</div>';
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="multiselect-actions">
+                                            <button class="multiselect-btn reset">Reset</button>
+                                            <button class="multiselect-btn apply">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="search-btn">Search</button>
+                            <button class="reset-btn">Reset All</button>
+                        </div>
+                    </div>
+
+                    <div class="content-area">
+                        <div class="locum-list">
+                            <div class="list-header">
+                                <h3 class="locum-count">0 Locum</h3>
+                            </div>
+                            <div class="locum-cards">
+                                <div style="text-align:center;padding:20px;">Please search to see results</div>
+                            </div>
+                        </div>
+                        <div class="detail-panel" id="locum-details">
+                            <div style="text-align:center;padding:40px;color:#777;">Select a locum to view details</div>
+                        </div>
+
+                        <div class="alerts-section">
+                            <div class="alerts-content">
+                                <span>Subscribe for Latest Locum Updates</span>
+                                <button class="get-alerts-btn">Get Alerts</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Alerts Inline Modal -->
+        <div id="job-alerts-modal" class="job-alerts-modal" aria-hidden="true">
+            <div class="jam-overlay" aria-hidden="true"></div>
+            <div class="jam-dialog" role="dialog" aria-modal="true" aria-labelledby="jam-title">
+                <button type="button" class="jam-close" aria-label="Close">×</button>
+                <h2 id="jam-title" class="jam-title">Get Notified – Jobs That Match You</h2>
+                <div class="jam-content">
+                    <?php echo do_shortcode('[job_alert_form]'); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        jQuery(document).ready(function($) {
+            if (window.myLocumSearchLoaded) return;
+            window.myLocumSearchLoaded = true;
+
+            let selectedFilters = {
+                job_listing_type: <?php echo json_encode(!empty($_GET['job_listing_type']) ? array_map('sanitize_text_field', explode(',', $_GET['job_listing_type'])) : []); ?>,
+                job_location_category: <?php echo json_encode(!empty($_GET['location']) ? array_map('sanitize_text_field', explode(',', $_GET['location'])) : []); ?>,
+                sector: <?php echo json_encode(!empty($_GET['sector']) ? array_map('sanitize_text_field', explode(',', $_GET['sector'])) : []); ?>
+            };
+
+            // Pre-select from URL
+            Object.keys(selectedFilters).forEach(type => {
+                selectedFilters[type].forEach(val => {
+                    $(`.multiselect-trigger[data-target="${type}"]`)
+                        .siblings('.multiselect-dropdown')
+                        .find(`input[value="${val}"]`).prop('checked', true);
+                });
+                updateTriggerText(type);
+            });
+
+            // Dropdown logic
+            $(document).on('click', '.multiselect-trigger', function(e) {
+                e.stopPropagation();
+                const $dd = $(this).siblings('.multiselect-dropdown');
+                $('.multiselect-dropdown').not($dd).removeClass('show');
+                $('.multiselect-trigger').not(this).removeClass('open');
+                $dd.toggleClass('show');
+                $(this).toggleClass('open');
+                if ($dd.hasClass('show')) $dd.find('.multiselect-search-input').val('').trigger('input');
+            });
+
+            $(document).on('click', function() {
+                $('.multiselect-dropdown').removeClass('show');
+                $('.multiselect-trigger').removeClass('open');
+            });
+
+            $(document).on('click', '.multiselect-dropdown', e => e.stopPropagation());
+
+            $(document).on('input', '.multiselect-search-input', function() {
+                const term = $(this).val().toLowerCase();
+                $(this).closest('.multiselect-dropdown').find('.multiselect-option').each(function() {
+                    $(this).toggle($(this).text().toLowerCase().includes(term));
+                });
+            });
+
+            $(document).on('change', '.multiselect-option input[type="checkbox"]', function() {
+                const type = $(this).closest('.multiselect-wrapper').find('.multiselect-trigger').data('target');
+                const val = $(this).val();
+                if ($(this).is(':checked')) {
+                    if (!selectedFilters[type].includes(val)) selectedFilters[type].push(val);
+                } else {
+                    selectedFilters[type] = selectedFilters[type].filter(x => x !== val);
+                }
+                updateTriggerText(type);
+            });
+
+            $(document).on('click', '.multiselect-btn.reset', function() {
+                const $dd = $(this).closest('.multiselect-dropdown');
+                const type = $dd.siblings('.multiselect-trigger').data('target');
+                $dd.find('input[type="checkbox"]').prop('checked', false);
+                $dd.find('.multiselect-search-input').val('');
+                $dd.find('.multiselect-option').show();
+                selectedFilters[type] = [];
+                updateTriggerText(type);
+            });
+
+            $(document).on('click', '.multiselect-btn.apply', function() {
+                $(this).closest('.multiselect-dropdown').removeClass('show')
+                    .siblings('.multiselect-trigger').removeClass('open');
+            });
+
+            function updateTriggerText(type) {
+                const $trigger = $(`.multiselect-trigger[data-target="${type}"]`);
+                const sel = selectedFilters[type];
+                const $text = $trigger.find('.selection-text');
+                $trigger.find('.selection-count').remove();
+
+                const defaults = {
+                    job_listing_type: 'Availabilities',
+                    job_location_category: 'All Locations',
+                    sector: 'Sectors'
+                };
+
+                if (sel.length === 0) {
+                    $text.text(defaults[type] || 'All');
+                    $trigger.removeClass('selected').css({
+                        background: '',
+                        borderColor: '',
+                        color: ''
+                    });
+                    $trigger.find('img').css('filter', '');
+                } else {
+                    if (sel.length === 1) {
+                        const label = $trigger.siblings('.multiselect-dropdown')
+                            .find(`input[value="${sel[0]}"]`).siblings('label').text();
+                        $text.text(label);
+                    } else {
+                        $text.text(`${sel.length} selected`);
+                    }
+                    $trigger.append(`<span class="selection-count">${sel.length}</span>`)
+                        .addClass('selected')
+                        .css({
+                            background: '#00688f',
+                            borderColor: '#00688f',
+                            color: '#fff'
+                        });
+                    $trigger.find('img').css('filter', 'brightness(0) invert(1)');
+                }
+            }
+
+            // Perform search
+            function performSearch() {
+                const data = {
+                    action: 'filter_locums_saved',
+                    nonce: '<?php echo wp_create_nonce("locum_search_nonce"); ?>',
+                    keyword: $('input[name="search_input"]').val(),
+                    job_listing_type: selectedFilters.job_listing_type,
+                    job_location_category: selectedFilters.job_location_category,
+                    sector: selectedFilters.sector
+                };
+
+                $('.locum-cards').html('<div class="loader-container"><div class="loader"></div></div>');
+                $('#locum-details').html('<div style="text-align:center;padding:40px;color:#777;">Select a locum to view details</div>');
+
+                $.post('<?php echo admin_url("admin-ajax.php"); ?>', data, function(res) {
+                    $('.locum-cards').html(res);
+                    const count = $('.locum-card').length;
+                    $('.locum-count').text(`${count} Locum${count !== 1 ? 's' : ''}`);
+                    if (count > 0) $('.locum-card').first().trigger('click');
+                }).fail(function() {
+                    $('.locum-cards').html('<div style="text-align:center;padding:20px;">Error loading locums.</div>');
+                });
+            }
+
+            $(document).on('click', '.search-btn', performSearch);
+            $(document).on('click', '.reset-btn', function() {
+                Object.keys(selectedFilters).forEach(t => selectedFilters[t] = []);
+                $('.multiselect-option input').prop('checked', false);
+                $('.multiselect-search-input').val('');
+                $('.multiselect-option').show();
+                $('input[name="search_input"]').val('');
+                $('.multiselect-trigger').each(function() {
+                    updateTriggerText($(this).data('target'));
+                });
+                performSearch();
+            });
+
+            $(document).on('click', '.locum-card', function() {
+                const id = $(this).data('id');
+                $('.locum-card').removeClass('active');
+                $(this).addClass('active');
+                $('#locum-details').html('<div class="loader-container"><div class="loader"></div></div>');
+
+                $.post('<?php echo admin_url("admin-ajax.php"); ?>', {
+                    action: 'get_locum_details_saved',
+                    nonce: '<?php echo wp_create_nonce("locum_search_nonce"); ?>',
+                    locum_id: id
+                }, function(res) {
+                    $('#locum-details').html(res);
+                });
+            });
+
+            performSearch();
+        });
+    </script>
+
+    <script>
+        jQuery(document).on("click", ".bookmark-btn", function(e) {
+            e.preventDefault();
+            const button = jQuery(this);
+            const icon = button.find(".bookmark-icon");
+            const locumId = button.data("locum-id");
+
+            <?php if (!is_user_logged_in()): ?>
+                if (typeof elementorProFrontend !== "undefined") {
+                    elementorProFrontend.modules.popup.showPopup({
+                        id: 2326
+                    });
+                } else {
+                    alert("Please log in to save bookmarks.");
+                }
+                return;
+            <?php endif; ?>
+
+            button.addClass("bookmark-loading");
+
+            jQuery.ajax({
+                url: "<?php echo admin_url('admin-ajax.php'); ?>",
+                type: "POST",
+                data: {
+                    action: "toggle_locum_bookmark",
+                    entry_id: locumId
+                },
+                success: function(response) {
+                    button.removeClass("bookmark-loading");
+                    if (response.success) {
+                        if (response.data.saved) {
+                            button.addClass("saved");
+                            icon.attr("fill", "currentColor");
+                        } else {
+                            button.removeClass("saved");
+                            icon.attr("fill", "none");
+                        }
+                    } else {
+                        alert(response.data.message);
+                    }
+                },
+                error: function() {
+                    button.removeClass("bookmark-loading");
+                    alert("Error! Try again.");
+                }
+            });
+        });
+    </script>
+
+    <script>
+        jQuery(function($) {
+            function openJobAlertsModal() {
+                const $popup = $('#job-alerts-modal');
+                const $dialog = $popup.find('.jam-dialog');
+
+                $popup.addClass('open').attr('aria-hidden', 'false');
+                $('body').addClass('no-scroll job-alerts-open');
+
+                // Re-init dropdown widgets so they render correctly inside the modal
+                prepareModalWidgets($dialog);
+
+                // focus first input
+                setTimeout(() => {
+                    const $first = $dialog.find('input, select, textarea, button, a').filter(':visible').first();
+                    if ($first.length) $first.trigger('focus');
+                }, 50);
+            }
+
+            function closeJobAlertsModal() {
+                $('#job-alerts-modal').removeClass('open').attr('aria-hidden', 'true');
+                $('body').removeClass('no-scroll job-alerts-open');
+            }
+
+            function prepareModalWidgets($dialog) {
+                // Select2 dropdowns
+                if ($.fn.select2) {
+                    $dialog.find('select').each(function() {
+                        const $sel = $(this);
+                        const wasSelect2 = !!$sel.data('select2') ||
+                            $sel.hasClass('select2') ||
+                            $sel.hasClass('select2-hidden-accessible');
+
+                        if ($sel.data('select2')) {
+                            try {
+                                $sel.select2('destroy');
+                            } catch (e) {}
+                        }
+                        if (wasSelect2) {
+                            $sel.select2({
+                                dropdownParent: $dialog,
+                                width: '100%'
+                            });
+                        }
+                    });
+                }
+            }
+
+            // Open on "Get Alerts"
+            $(document).on('click', '.get-alerts-btn', function(e) {
+                e.preventDefault();
+                openJobAlertsModal();
+            });
+
+            // Close on overlay, X, or ESC
+            $(document).on('click', '#job-alerts-modal .jam-overlay, #job-alerts-modal .jam-close', closeJobAlertsModal);
+            $(document).on('keydown', function(e) {
+                if (e.key === 'Escape' && $('#job-alerts-modal').hasClass('open')) {
+                    closeJobAlertsModal();
+                }
+            });
+        });
+    </script>
+
+<?php
+    return ob_get_clean();
+}
+add_shortcode('saved_locum', 'my_saved_locum');
+
+// ========================================
+// AJAX: Filter Saved Locums
+// ========================================
+add_action('wp_ajax_filter_locums_saved', 'my_filter_locums_saved');
+add_action('wp_ajax_nopriv_filter_locums_saved', 'my_filter_locums_saved');
+
+function my_filter_locums_saved()
+{
+    check_ajax_referer('locum_search_nonce', 'nonce');
+
+    global $wpdb;
+
+    if (!is_user_logged_in()) {
+        echo '<div style="padding:20px;text-align:center;">Please log in to view your saved locums.</div>';
+        wp_die();
+    }
+
+    $user_id = get_current_user_id();
+    $saved_ids = get_user_meta($user_id, 'saved_locums', true);
+    $saved_ids = is_array($saved_ids) ? array_map('intval', $saved_ids) : [];
+
+    if (empty($saved_ids)) {
+        echo '<div style="padding:20px;text-align:center;">You have no saved locums yet.</div>';
+        wp_die();
+    }
+
+    rsort($saved_ids);
+
+    $keyword = !empty($_POST['keyword']) ? sanitize_text_field($_POST['keyword']) : '';
+    $availability_filter = !empty($_POST['job_listing_type']) ? array_map('sanitize_text_field', (array) $_POST['job_listing_type']) : [];
+    $location_filter = !empty($_POST['job_location_category']) ? array_map('sanitize_text_field', (array) $_POST['job_location_category']) : [];
+    $sector_filter = !empty($_POST['sector']) ? array_map('sanitize_text_field', (array) $_POST['sector']) : [];
+
+    $availability_map = ['full_time' => 'Full Time', 'part_time' => 'Part Time', 'contract' => 'Contract'];
+    $mapped_availability = array_map(fn($a) => $availability_map[$a] ?? $a, $availability_filter);
+
+    $location_map = [];
+    $terms = get_terms(['taxonomy' => 'job_location_category', 'hide_empty' => false]);
+    if (!empty($terms) && !is_wp_error($terms)) {
+        foreach ($terms as $term) $location_map[$term->slug] = $term->name;
+    }
+    $mapped_locations = array_map(fn($l) => $location_map[$l] ?? $l, $location_filter);
+
+    $placeholders = implode(',', array_fill(0, count($saved_ids), '%d'));
+    $sql = $wpdb->prepare(
+        "SELECT entry_id, meta_key, meta_value 
+         FROM {$wpdb->prefix}frmt_form_entry_meta 
+         WHERE entry_id IN ($placeholders)
+         ORDER BY FIELD(entry_id, " . implode(',', $saved_ids) . ")",
+        $saved_ids
+    );
+
+    $rows = $wpdb->get_results($sql);
+    if (empty($rows)) {
+        echo '<div style="padding:20px;text-align:center;">No data found for saved locums.</div>';
+        wp_die();
+    }
+
+    $entries = [];
+    foreach ($rows as $row) {
+        $entries[$row->entry_id][$row->meta_key] = maybe_unserialize($row->meta_value);
+    }
+
+    $output = '';
+    foreach ($saved_ids as $entry_id) {
+        if (!isset($entries[$entry_id])) continue;
+        $meta = $entries[$entry_id];
+
+        $name = !empty($meta['name-2']) && !empty($meta['name-3'])
+            ? esc_html($meta['name-2'] . ' ' . $meta['name-3'])
+            : 'Unknown';
+
+        // Dynamic sector
+        $sector_raw = !empty($meta['select-6']) ? $meta['select-6'] : '';
+        $sectors = is_array($sector_raw) ? $sector_raw : explode(',', $sector_raw);
+        $sectors = array_map('trim', $sectors);
+        $sector_display = $sectors ? esc_html(implode(', ', $sectors)) : 'Sectors not provided';
+
+        $location = !empty($meta['select-4']) ? esc_html($meta['select-4']) : 'Location not provided';
+        $availability = !empty($meta['select-1']) ? esc_html($meta['select-1']) : 'Availability not provided';
+        $avatar_data = !empty($meta['upload-2']) && is_array($meta['upload-2']) && !empty($meta['upload-2']['file']['file_url'])
+            ? esc_url($meta['upload-2']['file']['file_url'])
+            : get_avatar_url($user->ID);
+        $avatar = $avatar_data ?: esc_url(get_stylesheet_directory_uri() . '/images/Avatar.png');
+
+        // Filters
+        $matches = true;
+
+        if (!empty($keyword)) {
+            $search_text = strtolower($name . ' ' . $sector_display . ' ' . ($meta['textarea-1'] ?? ''));
+            if (strpos($search_text, strtolower(trim($keyword))) === false) $matches = false;
+        }
+
+        if ($matches && !empty($mapped_availability) && !in_array($availability, $mapped_availability)) $matches = false;
+
+        if ($matches && !empty($mapped_locations)) {
+            $loc_val = $meta['select-4'] ?? '';
+            $found = false;
+            foreach ($mapped_locations as $loc) {
+                if ($loc_val === $loc) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) $matches = false;
+        }
+
+        if ($matches && !empty($sector_filter)) {
+            $found = false;
+            foreach ($sector_filter as $s) {
+                if (in_array($s, $sectors)) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) $matches = false;
+        }
+
+        if (!$matches) continue;
+
+        // Output card
+        $output .= '<div class="locum-card" data-id="' . esc_attr($entry_id) . '">';
+        $output .= '  <div class="card-content">';
+        $output .= '    <div class="profile-section">';
+        $output .= '      <img src="' . $avatar . '" alt="' . $name . '" class="avatar">';
+        $output .= '      <div class="profile-info">';
+        $output .= '        <h4>' . $name . '</h4>';
+        $output .= '        <p class="sector-text">' . $sector_display . '</p>';
+        $output .= '      </div>';
+        $output .= '    </div>';
+        $output .= '    <div class="card-meta">';
+        $output .= '      <div class="meta-item">';
+        $output .= '        <div class="meta-content"><img src="' . get_stylesheet_directory_uri() . '/images/duo-icons_location.png" alt=""></div>';
+        $output .= '        <span>' . $location . '</span>';
+        $output .= '      </div>';
+        $output .= '      <div class="meta-item" style="justify-content:end;">';
+        $output .= '        <div class="meta-content"><img src="' . get_stylesheet_directory_uri() . '/images/uim_calender.png" alt=""></div>';
+        $output .= '        <span>' . $availability . '</span>';
+        $output .= '      </div>';
+        $output .= '    </div>';
+        $output .= '  </div>';
+        $output .= '</div>';
+    }
+
+    echo $output ?: '<div style="padding:20px;text-align:center;">No saved locums match your filters.</div>';
+    wp_die();
+}
+
+// ========================================
+// AJAX: Toggle Bookmark (Fixed function name)
+// ========================================
+add_action('wp_ajax_toggle_locum_bookmark', 'toggle_locum_bookmarks');
+add_action('wp_ajax_nopriv_toggle_locum_bookmark', 'toggle_locum_bookmarks');
+
+function toggle_locum_bookmarks()
+{
+    if (!is_user_logged_in()) {
+        wp_send_json_error(['message' => 'Login required']);
+    }
+
+    $user_id = get_current_user_id();
+    $entry_id = intval($_POST['entry_id'] ?? 0);
+    if (!$entry_id) wp_send_json_error(['message' => 'Invalid ID']);
+
+    $saved = get_user_meta($user_id, 'saved_locums', true);
+    $saved = is_array($saved) ? $saved : [];
+    $was_saved = in_array($entry_id, $saved, true);
+
+    if ($was_saved) {
+        $saved = array_diff($saved, [$entry_id]);
+    } else {
+        $saved[] = $entry_id;
+    }
+
+    update_user_meta($user_id, 'saved_locums', array_values($saved));
+    wp_send_json_success(['saved' => !$was_saved]);
+}
+
+// ========================================
+// AJAX: Get Saved Locum Details
+// ========================================
+add_action('wp_ajax_get_locum_details_saved', 'my_get_locum_details_saved');
+add_action('wp_ajax_nopriv_get_locum_details_saved', 'my_get_locum_details_saved');
+
+function my_get_locum_details_saved()
+{
+    global $wpdb;
+
+    $entry_id = intval($_POST['locum_id'] ?? 0);
+    if (!$entry_id) {
+        echo '<div style="padding:20px;text-align:center;">Invalid locum ID.</div>';
+        wp_die();
+    }
+
+    $meta_rows = $wpdb->get_results($wpdb->prepare(
+        "SELECT meta_key, meta_value FROM {$wpdb->prefix}frmt_form_entry_meta WHERE entry_id = %d",
+        $entry_id
+    ), OBJECT);
+
+    if (empty($meta_rows)) {
+        echo '<div style="padding:20px;text-align:center;">Locum not found.</div>';
+        wp_die();
+    }
+
+    $meta_data = [];
+    foreach ($meta_rows as $row) {
+        $meta_data[$row->meta_key] = maybe_unserialize($row->meta_value);
+    }
+
+    $email = !empty($meta_data['email-1']) ? sanitize_email($meta_data['email-1']) : '';
+    $user = $email ? get_user_by('email', $email) : false;
+
+    $name = !empty($meta_data['name-2']) && !empty($meta_data['name-3'])
+        ? esc_html($meta_data['name-2'] . ' ' . $meta_data['name-3'])
+        : ($user ? esc_html($user->display_name) : 'Unknown');
+
+    // Dynamic Sector
+    $sector_raw = !empty($meta_data['select-6']) ? $meta_data['select-6'] : '';
+    $sectors = is_array($sector_raw) ? $sector_raw : explode(',', $sector_raw);
+    $sectors = array_map('trim', $sectors);
+    $sector_display = $sectors ? esc_html(implode(', ', $sectors)) : 'Not specified';
+
+    $skills = !empty($meta_data['text-5']) ? esc_html($meta_data['text-5']) : 'Specializations not provided';
+    $about = !empty($meta_data['textarea-1']) ? wp_strip_all_tags($meta_data['textarea-1']) : 'No description provided';
+    $availability = !empty($meta_data['select-1']) ? esc_html($meta_data['select-1']) : 'Not specified';
+    $address = !empty($meta_data['address-1']) && is_array($meta_data['address-1']) ? $meta_data['address-1'] : [];
+    $location = !empty($address['city']) ? esc_html($address['city']) . ' - ' . esc_html($meta_data['select-4'] ?? 'Not specified') : esc_html($meta_data['select-4'] ?? 'Not specified');
+    $accreditation = !empty($meta_data['text-4']) ? esc_html($meta_data['text-4']) : 'Not specified';
+    $qualification = !empty($meta_data['select-3']) ? esc_html($meta_data['select-3']) : 'Not specified';
+    $experience = !empty($meta_data['text-3']) ? esc_html($meta_data['text-3']) . ' Years' : 'Not specified';
+    $linkedin = !empty($meta_data['url-1']) ? esc_url($meta_data['url-1']) : '';
+    $mobileNumber = !empty($meta_data['phone-1']) ? esc_html($meta_data['phone-1']) : '#';
+    $avatar = !empty($meta_data['upload-2']) && is_array($meta_data['upload-2']) && !empty($meta_data['upload-2']['file']['file_url'])
+        ? esc_url($meta_data['upload-2']['file']['file_url'])
+        : ($user ? get_avatar_url($user->ID) : esc_url(get_stylesheet_directory_uri() . '/images/Avatar.png'));
+    $cv_url = !empty($meta_data['upload-1']) && is_array($meta_data['upload-1']) && !empty($meta_data['upload-1']['file']['file_url'][0])
+        ? esc_url($meta_data['upload-1']['file']['file_url'][0]) : '';
+
+    $saved_locums = get_user_meta(get_current_user_id(), 'saved_locums', true);
+    $is_saved = is_array($saved_locums) && in_array($entry_id, $saved_locums);
+    $status = !empty($meta_data['status']) ? esc_html($meta_data['status']) : 'N/A';
+?>
+
+    <div class="profile-header">
+        <div class="profile-main">
+            <img src="<?php echo $avatar; ?>" alt="<?php echo $name; ?>" class="profile-avatar" />
+            <div class="profile-details">
+                <h2><?php echo $name; ?></h2>
+                <p class="sector-text"><?php echo $sector_display; ?></p>
+            </div>
+        </div>
+        <div class="profile-actions">
+            <span class="status-badge <?php echo strtolower(str_replace(' ', '-', $status)); ?>"><?php echo $status; ?></span>
+            <button class="bookmark-btn <?php echo $is_saved ? 'saved' : ''; ?>" data-locum-id="<?php echo esc_attr($entry_id); ?>">
+                <svg class="bookmark-icon" width="22" height="22" viewBox="0 0 24 24" fill="<?php echo $is_saved ? 'currentColor' : 'none'; ?>" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <span class="compare-link">+ Add to Compare</span>
+        <div class="button-group">
+            <a href="mailto:<?php echo $email; ?>" class="btn-outline">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/images/Envelope.png'); ?>" alt="Email" /> Send Mail
+            </a>
+            <a href="tel:<?php echo $mobileNumber; ?>" class="btn-primary" style="text-decoration:none; color:#fff;">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/images/proicons_call.png'); ?>" alt="Call" />
+                <?php echo $mobileNumber; ?>
+            </a>
+        </div>
+    </div>
+
+    <div class="profile-content">
+        <div class="about-section">
+            <h3>About Me</h3>
+            <p><?php echo $about; ?></p>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/images/uil_calender.png'); ?>" alt="Availability" />
+                <div>
+                    <div class="info-label">AVAILABILITY</div>
+                    <div class="info-value"><?php echo $availability; ?></div>
+                </div>
+            </div>
+            <div class="info-item">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/images/MapTrifold.png'); ?>" alt="Location" />
+                <div>
+                    <div class="info-label">LOCATION</div>
+                    <div class="info-value"><?php echo $location; ?></div>
+                </div>
+            </div>
+            <div class="info-item">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/images/ClipboardText.png'); ?>" alt="Accreditation" />
+                <div>
+                    <div class="info-label">ACCREDITATION</div>
+                    <div class="info-value"><?php echo $accreditation; ?></div>
+                </div>
+            </div>
+            <div class="info-item">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/images/UserCircle.png'); ?>" alt="Sector" />
+                <div>
+                    <div class="info-label">SECTOR</div>
+                    <div class="info-value"><?php echo $sector_display; ?></div>
+                </div>
+            </div>
+            <div class="info-item">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/images/Stack.png'); ?>" alt="Experience" />
+                <div>
+                    <div class="info-label">EXPERIENCE</div>
+                    <div class="info-value"><?php echo $experience; ?></div>
+                </div>
+            </div>
+            <div class="info-item">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/images/GraduationCap.png'); ?>" alt="Qualification" />
+                <div>
+                    <div class="info-label">QUALIFICATION</div>
+                    <div class="info-value"><?php echo $qualification; ?></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p class="additional-info"><?php echo $about; ?></p>
+
+    <div class="footer-actions"><span>Reach out on LinkedIn</span></div>
+    <div class="footer-buttons">
+        <?php if ($linkedin): ?>
+            <a href="<?php echo $linkedin; ?>" target="_blank">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/images/Social Media.png'); ?>" alt="LinkedIn" />
+            </a>
+        <?php else: ?>
+            <a href="javascript:void(0);"><img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/images/Social Media.png'); ?>" alt="LinkedIn" /></a>
+        <?php endif; ?>
+
+        <?php if ($cv_url): ?>
+            <a href="<?php echo $cv_url; ?>" class="download-btn" download>
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/images/DownloadSimple.png'); ?>" alt="Download" />
+                Download CV
+            </a>
+        <?php endif; ?>
+    </div>
+
+<?php
+    wp_die();
+}

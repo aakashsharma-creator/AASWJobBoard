@@ -1,0 +1,968 @@
+<?php
+// Exit if accessed directly
+if (!defined('ABSPATH')) {
+  exit;
+}
+
+function my_custom_list_job_shortcode()
+{
+  ob_start();
+
+
+  // Query job listings
+  $args = array(
+    'post_type' => 'job_listing',
+    'post_status' => array('publish', 'pending', 'draft', 'expired'),
+    'posts_per_page' => -1, // Fetch all jobs
+  );
+
+  $jobs = new WP_Query($args);
+  $delete_nonce = wp_create_nonce('delete_job_nonce');
+  $duplicate_nonce = wp_create_nonce('duplicate_job_nonce');
+  ?>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+  <!-- AlertifyJS JS -->
+  <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    .page {
+      /*max-width: 1200px;*/
+      margin: auto;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .page-header-joblist {
+      background: #fff;
+      border: 1px solid #e5dcdc;
+      padding: 23px;
+      border-radius: 13px;
+    }
+
+    .page-header h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #1a1a1a;
+    }
+
+    .date-range {
+      border: 1px solid #dcdfe6;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: #444;
+      background: #fff;
+    }
+
+    .btn-primary {
+      background: #00688F;
+      border: none;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-primary:hover {
+      background: #0056b3;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .card-header h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .btn-filter {
+      border: 1px solid #dcdfe6;
+      background: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #444;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid #e6e8ef;
+    }
+
+    th {
+      font-weight: 600;
+      color: #444;
+      background: #fafbfc;
+    }
+
+    /* Status pills */
+    .status {
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .status.open {
+      background: #e6f9ed;
+      color: #1f9254;
+      border: 1px solid #a6e1c1;
+    }
+
+    .status.publish {
+      background: #e6f9ed;
+      color: #1f9254;
+      border: 1px solid #a6e1c1;
+    }
+
+    .status.closed {
+      background: #fdecea;
+      color: #b71c1c;
+      border: 1px solid #f5c6c6;
+    }
+
+    .status.draft {
+      background: #fff4e5;
+      color: #8a6d3b;
+      border: 1px solid #f0dca4;
+    }
+
+    /* Job type tags */
+    .tag {
+      padding: 4px 15px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      color: #fff;
+      display: inline-block;
+    }
+
+    .tag.fulltime {
+      color: #369ADD;
+      background: #99DAF380;
+      border: 1px solid #369ADD;
+    }
+
+    .tag.parttime {
+      color: #AB233E;
+      background: #A324411F;
+      border: 1px solid #AB233E;
+    }
+
+    .tag.freelance {
+      color: #e95317;
+      background: #cf91311f;
+      border: 1px solid #e95317;
+    }
+
+    .tag.locum\/contractft {
+      color: #8E44AD;
+      /* purple */
+      background: #F4E6FA;
+      border: 1px solid #8E44AD;
+    }
+
+    /* Locum/Contract PT */
+    .tag.locum\/contractpt {
+      color: #D35400;
+      /* burnt orange */
+      background: #FDEBDD;
+      border: 1px solid #D35400;
+    }
+
+    /* Permanant (typo kept same as your slug) */
+    .tag.permanant {
+      color: #2C3E50;
+      /* dark gray-blue */
+      background: #EAECEE;
+      border: 1px solid #2C3E50;
+    }
+
+    /* Permanent Full Time */
+    .tag.permanentfulltime {
+      color: #27AE60;
+      /* green */
+      background: #E8F8F1;
+      border: 1px solid #27AE60;
+    }
+
+    /* Permanent Part Time */
+    .tag.permanentparttime {
+      color: #C0392B;
+      /* red */
+      background: #FDEDEC;
+      border: 1px solid #C0392B;
+    }
+
+    table td {
+      color: #231F20;
+    }
+
+    table td,
+    table th {
+      border: 0px solid hsla(0, 0%, 50%, .502);
+      font-size: 14px;
+      font-weight: normal;
+    }
+
+    .job-subtitle {
+      margin: 4px 0 0;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .pagination {
+      display: block;
+    }
+
+    table.dataTable {
+      padding-top: 16px;
+    }
+
+    .action-menu {
+      position: relative;
+      display: inline-block;
+    }
+
+
+
+    .action-dropdown {
+      display: none;
+      /* hide by default */
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
+      min-width: 160px;
+      z-index: 999;
+      padding: 6px 0;
+    }
+
+    /* When JS adds 'show', make it visible */
+    .action-dropdown.show {
+      display: block;
+    }
+
+    /* Default styles */
+    .action-dropdown button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 15px;
+      background: none;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+      color: #333;
+      transition: all 0.2s ease;
+      border-radius: 6px;
+    }
+
+    /* Edit hover */
+    .action-dropdown .action-edit:hover {
+      background: #00688F;
+      /* blue */
+      color: #fff;
+    }
+
+    /* View hover */
+    .action-dropdown .action-view:hover {
+      background: #00688F;
+      /* dark gray */
+      color: #fff;
+    }
+
+    /* Duplicate hover */
+    .action-dropdown .action-duplicate:hover {
+      background: #00688F;
+      /* orange */
+      color: #fff;
+    }
+
+    /* Renew hover */
+    .action-dropdown .action-renew:hover {
+      background: #00688F;
+      /* green */
+      color: #fff;
+    }
+
+    /* Delete hover */
+    .action-dropdown .action-delete:hover {
+      background: #dc3545;
+      /* red */
+      color: #fff;
+    }
+
+    .action-menu .action-toggle {
+      background: none;
+      border: none;
+      font-size: 22px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 50%;
+      color: #555;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .action-menu .action-toggle:hover {
+      background: #f0f0f0;
+      color: #000;
+    }
+
+    /* Remove button look from dropdown items */
+    .action-dropdown button {
+      background: none;
+      border: none;
+      outline: none;
+    }
+
+    /* Optional: icon alignment fix */
+    .action-dropdown i {
+      font-size: 14px;
+    }
+
+    table.dataTable tbody th,
+    table.dataTable tbody td {
+      padding: 8px 7px;
+    }
+
+
+    /* Confirm Dialog Header */
+    /* Center footer buttons */
+    .ajs-dialog .ajs-footer {
+      text-align: center !important;
+      background: #fff !important;
+      border-top: none !important;
+      padding: 15px 10px;
+    }
+
+    /* Buttons */
+    .ajs-dialog .ajs-button {
+      min-width: 120px;
+      border-radius: 8px !important;
+      padding: 8px 16px !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      margin: 0 6px;
+    }
+
+    /* OK Button (Delete) */
+    .ajs-dialog .ajs-ok {
+      background: #dc3545 !important;
+      color: #fff !important;
+      border: none !important;
+    }
+
+    .ajs-dialog .ajs-ok:hover {
+      background: #a71d2a !important;
+    }
+
+    /* Cancel Button */
+    .ajs-dialog .ajs-cancel {
+      background: #f0f0f0 !important;
+      color: #333 !important;
+      border: none !important;
+    }
+
+    .ajs-dialog .ajs-cancel:hover {
+      background: #d6d6d6 !important;
+    }
+
+    .ajs-dialog .ajs-header {
+      display: none !important;
+    }
+
+    /* Bigger warning icon */
+
+    .action-icon {
+      width: 18px;
+      /* adjust size */
+      height: 18px;
+      /* keep consistent */
+      object-fit: contain;
+      /* prevent stretching */
+      vertical-align: middle;
+      /* align with text */
+      margin-right: 5px;
+      /* spacing before text */
+    }
+
+    /* Make DataTable responsive and full width */
+    table.job-list {
+      width: 100% !important;
+      table-layout: auto !important;
+    }
+
+    /* Scrollable table wrapper */
+    .table-responsive {
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    /* Increase table width */
+    table.list-job {
+      min-width: 1200px;
+      /* adjust width as needed */
+      width: 100%;
+      table-layout: fixed;
+      /* helps with consistent column sizing */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+      table.list-job {
+        min-width: 1000px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      table.list-job {
+        min-width: 900px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      table.list-job {
+        min-width: 800px;
+      }
+    }
+
+    /* Optional: make columns ellipsis on small screens */
+    table.list-job td,
+    table.list-job th {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Job Title column */
+    #DataTables_Table_0 th:nth-child(1),
+    #DataTables_Table_0 td:nth-child(1) {
+      width: 260px;
+      max-width: 260px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    /* Status column */
+    #DataTables_Table_0 th:nth-child(2),
+    #DataTables_Table_0 td:nth-child(2) {
+      width: 100px;
+      max-width: 100px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    /* Date Posted column */
+    #DataTables_Table_0 th:nth-child(3),
+    #DataTables_Table_0 td:nth-child(3) {
+      width: 120px;
+      max-width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    /* Expiry Date column */
+    #DataTables_Table_0 th:nth-child(4),
+    #DataTables_Table_0 td:nth-child(4) {
+      width: 120px;
+      max-width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    /* Job Type column */
+    #DataTables_Table_0 th:nth-child(5),
+    #DataTables_Table_0 td:nth-child(5) {
+      width: 220px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+
+    }
+
+    /* Views column */
+    #DataTables_Table_0 th:nth-child(6),
+    #DataTables_Table_0 td:nth-child(6) {
+      width: 80px;
+      max-width: 80px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    /* Category column */
+    #DataTables_Table_0 th:nth-child(7),
+    #DataTables_Table_0 td:nth-child(7) {
+      width: 150px;
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    /* Actions column */
+    #DataTables_Table_0 th:nth-child(8),
+    #DataTables_Table_0 td:nth-child(8) {
+      width: 150px;
+      max-width: 150px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    .dataTables_wrapper {
+      width: 100% !important;
+    }
+
+
+    .dataTables_scrollBody {
+      width: 100% !important;
+    }
+
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #9fbdd1ff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+  <div class="job-listing-container">
+
+    <!-- Header -->
+
+
+    <!-- Table -->
+    <div class="page">
+      <!-- Top header -->
+      <div class="page-header page-header-joblist">
+        <div>
+          <h2>Job Listing</h2>
+          <p class="job-subtitle">Here is your jobs listing status from Jan 25 - Aug 25.</p>
+        </div>
+        <div>
+          <span class="date-range">Jan 25 - Aug 25</span>
+          <button class="btn-primary">+ Post a New Job</button>
+        </div>
+      </div>
+
+      <!-- Job list card -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Job List</h3>
+
+        </div>
+        <div class="table-responsive">
+          <table class="list-job">
+            <thead>
+              <tr>
+                <th>Job Title</th>
+                <th>Status</th>
+                <th>Date Posted</th>
+                <th>Expiry Date</th>
+                <th>Job Type</th>
+                <th>Views</th>
+                <th>Category</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+
+            <tbody>
+              <?php if ($jobs->have_posts()): ?>
+                <?php while ($jobs->have_posts()):
+                  $jobs->the_post();
+                  $post_id = get_the_ID();
+
+                  // Get job data from WP Job Manager meta fields
+                  $status = get_post_status($post_id); // publish, draft, expired
+                  $job_type_terms = wp_get_post_terms($post_id, 'job_listing_type');
+                  $job_types = !empty($job_type_terms) ? wp_list_pluck($job_type_terms, 'name') : array();
+                  $job_type_display = !empty($job_types) ? implode(', ', $job_types) : 'N/A';
+
+                  $date_posted = get_the_date('M-d-Y', $post_id);
+                  $expiry_date = get_post_meta($post_id, '_job_expires', true);
+                  $expiry_date = $expiry_date ? date('M-d-Y', strtotime($expiry_date)) : '-';
+
+                  $views = get_post_meta($post_id, '_job_views', true) ?: 0;
+
+                  $categories = wp_get_post_terms($post_id, 'job_listing_category');
+                  $category_display = !empty($categories) ? implode(', ', wp_list_pluck($categories, 'name')) : '';
+                  ?>
+                  <tr>
+                    <td><?php the_title(); ?></td>
+                    <td>
+                      <span class="status <?php echo esc_attr($status); ?>">
+                        <?php echo ucfirst($status); ?>
+                      </span>
+                    </td>
+                    <td><?php echo esc_html($date_posted); ?></td>
+                    <td><?php echo esc_html($expiry_date); ?></td>
+                    <td>
+                      <?php foreach ($job_types as $type): ?>
+                        <span
+                          class="tag <?php echo strtolower(str_replace(' ', '', $type)); ?>"><?php echo esc_html($type); ?></span>
+                      <?php endforeach; ?>
+                    </td>
+                    <td><?php echo esc_html($views); ?></td>
+                    <td><?php echo esc_html($category_display); ?></td>
+                    <td style="text-align: center;">
+                      <div class="action-menu">
+                        <button class="action-toggle">...</button>
+                        <div class="action-dropdown">
+                          <button class="action-edit">
+                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/tabler_edit.png" alt="Edit"
+                              class="action-icon">
+                            <span style="font-size:14px;">Edit</span>
+                          </button>
+                          <button class="action-view"
+                            onclick="window.open('<?php echo get_permalink($post_id); ?>', '_blank')">
+                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/lucide_view.png" alt="View"
+                              class="action-icon">
+                            <span style="font-size:14px;"> View Job</span>
+                          </button>
+                          <button class="action-duplicate" data-id="<?php echo esc_attr($post_id); ?>">
+                            <i class="dashicons dashicons-admin-page" style="font-size:24px;"></i> Duplicate
+                          </button>
+                          <button class="action-renew">
+                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/octicon_issue-reopened-16.png"
+                              alt="Renew" class="action-icon">
+                            <span style="font-size:14px;"> Renew</span>
+                          </button>
+                          <button class="action-delete" data-id="<?php echo esc_attr($post_id); ?>">
+                            <img
+                              src="<?php echo get_stylesheet_directory_uri(); ?>/images/material-symbols_delete-outline.png"
+                              alt="Delete" class="action-icon">
+                            <span style="font-size:14px;"> Delete</span>
+                          </button>
+                        </div>
+                    </td>
+                  </tr>
+                <?php endwhile;
+                wp_reset_postdata(); ?>
+              <?php else: ?>
+                <tr>
+                  <td colspan="8" style="text-align:center;">No job listings found.</td>
+                </tr>
+              <?php endif; ?>
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // const dataTable = jQuery('.job-list').DataTable(); // ✅ using your table class
+
+      // Simple loader overlay
+      function showLoader() {
+        let loader = document.createElement('div');
+        loader.id = 'ajax-loader';
+        loader.style.position = 'fixed';
+        loader.style.top = '0';
+        loader.style.left = '0';
+        loader.style.width = '100%';
+        loader.style.height = '100%';
+        loader.style.background = 'rgba(255,255,255,0.6)';
+        loader.style.zIndex = '9999';
+        loader.style.display = 'flex';
+        loader.style.alignItems = 'center';
+        loader.style.justifyContent = 'center';
+        loader.innerHTML = '<div class="spinner"></div>';
+        document.body.appendChild(loader);
+      }
+
+      function hideLoader() {
+        let loader = document.getElementById('ajax-loader');
+        if (loader) loader.remove();
+      }
+
+      // Toggle dropdown
+      document.querySelectorAll(".action-toggle").forEach(btn => {
+        btn.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          let originalDropdown = this.nextElementSibling;
+
+          // Remove any existing floating dropdown
+          let existing = document.querySelector(".floating-dropdown");
+          if (existing) existing.remove();
+
+          // Clone dropdown and append to body
+          let dropdown = originalDropdown.cloneNode(true);
+          dropdown.classList.add("floating-dropdown");
+          dropdown.style.position = "fixed";
+          dropdown.style.zIndex = "9999";
+          dropdown.style.display = "block";
+
+          // Position it below the button
+          const rect = this.getBoundingClientRect();
+          dropdown.style.top = rect.bottom + "px";
+          dropdown.style.left = rect.left + "px";
+
+          document.body.appendChild(dropdown);
+
+          // Remove dropdown if clicked outside
+          document.addEventListener("click", function removeDropdown(event) {
+            if (!dropdown.contains(event.target)) {
+              dropdown.remove();
+              document.removeEventListener("click", removeDropdown);
+            }
+          });
+        });
+      });
+      // Handle delete
+      document.querySelectorAll(".action-delete").forEach(btn => {
+	  
+	 
+        btn.addEventListener("click", function (e) {
+		
+		 alert('aa');
+		
+          alertify.set('notifier', 'position', 'top-right');
+          e.preventDefault();
+          let postId = this.dataset.id;
+          alertify.confirm(
+            "", // empty title (so header can be hidden with CSS)
+            `
+  <div style="text-align:center; padding:10px;">
+    <div style="font-size:40px; color:#dc3545; margin-bottom:12px;">
+      <i class="dashicons dashicons-warning" style="font-size:50px;"></i>
+    </div>
+    <h3 style="font-size:18px; font-weight:600; color:#1a1a1a; margin:0;">
+      Delete Job?
+    </h3>
+    <p style="margin-top:6px; font-size:14px; color:#555;">
+      Are you sure you want to delete this job?
+    </p>
+  </div>
+  `,
+            function () {
+              showLoader();
+              fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({ action: "delete_job_listing", post_id: postId, _ajax_nonce: '<?php echo $delete_nonce; ?>' })
+              })
+                .then(res => res.json())
+                .then(data => {
+                  hideLoader();
+                  if (data.success) { alertify.success("Job deleted successfully!"); window.location.reload(); }
+                  else { alertify.error(data.message || "Failed to delete job."); }
+                });
+            },
+            function () { /* cancel */ }
+          );
+        });
+      });
+
+      // Duplicate
+      document.querySelectorAll(".action-duplicate").forEach(btn => {
+        btn.addEventListener("click", function (e) {
+
+          alertify.set('notifier', 'position', 'top-right');
+          e.preventDefault();
+          let postId = this.dataset.id;
+          alertify.confirm(
+            "",
+            `
+      <div style="text-align:center; padding:10px;">
+        <div style="font-size:40px; color:#0d6efd; margin-bottom:12px;">
+          <i class="dashicons dashicons-admin-page" style="font-size:50px;"></i>
+        </div>
+        <h3 style="font-size:18px; font-weight:600; color:#1a1a1a; margin:0;">
+          Duplicate Job?
+        </h3>
+        <p style="margin-top:6px; font-size:14px; color:#555;">
+          Do you want to duplicate this job listing?
+        </p>
+      </div>
+      `,
+            function () {
+              showLoader();
+              fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({ action: "duplicate_job_listing", post_id: postId, _ajax_nonce: '<?php echo $duplicate_nonce; ?>' })
+              })
+                .then(res => res.json())
+                .then(data => {
+                  hideLoader();
+                  if (data.success) { alertify.success("Job duplicated successfully!"); window.location.reload(); }
+                  else { alertify.error(data.message || "Failed to duplicate job."); }
+                });
+            },
+            function () { /* cancel */ }
+          );
+        });
+      });
+    });
+  </script>
+
+
+
+
+  <?php 
+  return ob_get_clean();
+}
+
+add_shortcode('list_job_custom', 'my_custom_list_job_shortcode');
+
+// AJAX Delete handler
+add_action('wp_ajax_delete_job_listing', 'my_delete_job_listing');
+function my_delete_job_listing()
+{
+  check_ajax_referer('delete_job_nonce');
+
+  if (!current_user_can('delete_posts')) {
+    wp_send_json_error(array('message' => 'You are not allowed to delete this job.'));
+  }
+
+  $post_id = intval($_POST['post_id'] ?? 0);
+  if (!$post_id || get_post_type($post_id) !== 'job_listing') {
+    wp_send_json_error(array('message' => 'Invalid job ID.'));
+  }
+
+  $deleted = wp_delete_post($post_id, true);
+  $deleted ? wp_send_json_success() : wp_send_json_error(array('message' => 'Could not delete job. Try again.'));
+}
+
+
+
+// AJAX Duplicate handler
+add_action('wp_ajax_duplicate_job_listing', 'my_duplicate_job_listing');
+function my_duplicate_job_listing()
+{
+  check_ajax_referer('duplicate_job_nonce');
+
+  if (!current_user_can('edit_posts')) {
+    wp_send_json_error(array('message' => 'You are not allowed to duplicate this job.'));
+  }
+
+  $post_id = intval($_POST['post_id'] ?? 0);
+  $post = get_post($post_id);
+
+  if (!$post || $post->post_type !== 'job_listing') {
+    wp_send_json_error(array('message' => 'Invalid job ID.'));
+  }
+
+  // Create new post array
+  $new_post = array(
+    'post_title' => $post->post_title . ' (Copy)',
+    'post_content' => $post->post_content,
+    'post_status' => 'draft',
+    'post_type' => 'job_listing',
+    'post_author' => get_current_user_id(),
+  );
+
+  $new_post_id = wp_insert_post($new_post);
+
+  if (is_wp_error($new_post_id) || !$new_post_id) {
+    wp_send_json_error(array('message' => 'Could not duplicate job.'));
+  }
+
+  // Copy meta fields
+  $meta = get_post_meta($post_id);
+  foreach ($meta as $key => $values) {
+    foreach ($values as $value) {
+      update_post_meta($new_post_id, $key, maybe_unserialize($value));
+    }
+  }
+
+  // Copy taxonomies
+  $taxonomies = get_object_taxonomies('job_listing');
+  foreach ($taxonomies as $taxonomy) {
+    $terms = wp_get_object_terms($post_id, $taxonomy, array('fields' => 'ids'));
+    wp_set_object_terms($new_post_id, $terms, $taxonomy);
+  }
+
+  wp_send_json_success(array('new_post_id' => $new_post_id));
+}

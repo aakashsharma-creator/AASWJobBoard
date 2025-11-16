@@ -1,0 +1,383 @@
+/*
+Theme Name: Hello Elementor Child
+Template: hello-elementor
+Description: A child theme for the Hello Elementor theme.
+Author: Your Name
+Version: 1.0.0
+Text Domain: hello-elementor-child
+*/
+
+
+
+body, html {
+  font-family: 'Nunito Sans', sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Nunito Sans', sans-serif !important;
+}
+
+/* Add your custom CSS below */
+body .forminator-ui#forminator-module-74.forminator-design--default .forminator-error-message {
+    background-color: transparent;
+    color: red;
+    padding-left: 3px;
+}
+div.confirmpassword input[name="text-2"] {
+    -webkit-text-security: disc;
+    -moz-text-security: disc;
+    text-security: disc;
+}
+
+/* section.job-packages {
+    width: 100%;
+    max-width: 100%;
+}
+
+section.job-packages .package {
+    display: inline-block;
+    width: 33%;
+    padding: 25px;
+} */
+
+/*new*/
+.packages {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+.package {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    /* width: 32%; */
+    padding: 0px;
+    text-align: left;
+    min-height: 450px;
+    height: 100%;
+    position: relative;
+    border-bottom: 4px solid #01688f;
+}
+.package.red {
+    border-bottom: 4px solid #AA243F;
+    /* margin-top: -40px; */
+}
+.package-header {
+    background-color: #01688f;
+    color: #fff;
+    padding: 20px;
+    border-radius: 5px 5px 20px 0px;
+    font-weight: bold;
+    font-size: 22px;    
+}
+.package-header.starter {
+    background-color: #AA243F;
+    position: relative;
+}
+.package-header.starter span{
+    font-size: 11px;
+    background-color: #ffffff;
+    color: #AA243F;
+    padding: 2px 22px;
+    border-radius: 0px 5px 0px 5px;
+    position: absolute;
+    right: 6px;
+    top: 6px;
+}
+.price {
+    font-size: 44px;
+    color: #01688f;
+    margin: 10px 0 10px 15px;
+    font-weight: bold;
+}
+.description {
+    font-size: 14px;
+    color: #01688f;
+    margin-bottom: 0px;
+    padding: 8px 15px;
+}
+.features {
+    list-style: none;
+    padding: 0px 10px 15px 15px;
+    margin-bottom: 20px;
+}
+a.choose-package {
+    padding: 15px 40px;
+    background-color: #01688f;
+    position: absolute;
+    width: 280px;
+    left: 20px;
+    bottom: 16px;
+}
+.features li {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #333;
+}
+.features li::before {
+    content: "✓";
+    color: #007bff;
+    margin-right: 10px;
+}
+.choose-package {
+    padding: 15px 25px 15px 15px;
+    background-color: #01688f;
+    position: absolute;
+    width: 280px;
+    left: 20px;
+    bottom: 16px;
+    color: #FFFFFF;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    text-align: left;
+}
+.choose-package img {
+    width: 18px !important;
+    font-size: 20px;
+    float: right;
+    vertical-align: text-bottom;
+    margin-top: 4px;
+}
+.choose-package.starter {
+    background-color: #AA243F;
+}
+.choose-package.starter:hover {
+     background-color: #AA243F;
+}
+.choose-package:hover{
+    color: #FFFFFF;
+    background-color: #01688f;
+}
+@media (max-width: 768px) {
+    .packages {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+.subscribe-btn img {
+    vertical-align: text-bottom;
+	margin-left: 5px;
+}
+.woocommerce-checkout .price{
+    font-size: 22px;
+}
+.wc-block-components-order-summary .wc-block-components-order-summary-item__individual-prices {
+    display: none !important;
+}
+
+
+/* Absolute Center Spinner */
+.loading {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: none;
+}
+
+/* Transparent Overlay */
+.loading:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+    background: rgb(34 34 102 / 90%);
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+  /* hide "loading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.loading:not(:required):after {
+  content: '';
+  display: block;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 150ms infinite linear;
+  -moz-animation: spinner 150ms infinite linear;
+  -ms-animation: spinner 150ms infinite linear;
+  -o-animation: spinner 150ms infinite linear;
+  animation: spinner 150ms infinite linear;
+  border-radius: 0.5em;
+  -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+}
+
+/* Animation */
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+/* Default package styling */
+.packages .package {
+    transition: all 0.3s ease;
+}
+/* Middle/center package in carousel */
+.package:hover {
+    transform: translateY(-40px);
+    z-index: 3;
+    overflow: hidden;
+}
+.owl-carousel .owl-stage-outer {
+    position: relative;
+    overflow: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    padding: 80px 0px;
+}
+
+.swiper-wrapper .swiper-slide-duplicate-next {
+    transform: translateY(-20px);
+    transition: all 0.4s ease-in-out;
+    z-index: 2;
+}
+.swiper-wrapper .swiper-slide:hover {
+    transform: translateY(-30px);
+    transition: all 0.4s ease-in-out;
+    z-index: 2;
+}
+
+
+
+/* Ensure submenu shows */
+.elementor-nav-menu--main .elementor-nav-menu .sub-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 9999;
+    background: #fff; /* adjust to your design */
+}
+
+.elementor-nav-menu--main .elementor-nav-menu li:hover > .sub-menu {
+    display: block;
+}
+
+/* Prevent clipping */
+header, .elementor-section {
+    overflow: visible !important;
+}
+
+body nav ul li a:hover {
+  border: 2px solid #006b8f;  /* Blue border on hover */
+  /*color: #006b8f !important;  */          
+  background-color: transparent; /* Keep background white */
+}
+
+body nav ul ul li a:hover{
+	border-radius: 0px !important;
+	transition: all 0.4s ease-in-out;
+	background-color: #006b8f;
+	color: #FFFFFF !important; 
+	border-bottom: 2px solid #ffffff;
+} 
+
+body .elementor-9 .elementor-element.elementor-element-b7d9d0c .elementor-button-icon svg {
+    width: 50%;
+    height: 50%;
+    fill: currentColor;
+    stroke: none;
+    display: block;
+}
+body .elementor-9 .elementor-element.elementor-element-6329750 .elementor-button-icon svg {
+    width: 55%;
+    height: 55%;
+    fill: currentColor;
+    stroke: none;
+    display: block;
+}
+body .forminator-ui#forminator-module-2303.forminator-design--default .forminator-error-message {
+    background-color: transparent;
+    color: red;
+    padding: 0;
+}  
+
+/* Hide advertiser menu items for candidates */
+body.role-candidate .advertiser-only {
+    display: none !important;
+}
+
+/* Hide locum menu items for employers/advertisers */
+body.role-employer .locum-only {
+    display: none !important;
+}

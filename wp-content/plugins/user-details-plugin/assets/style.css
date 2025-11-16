@@ -1,0 +1,160 @@
+.udp-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    overflow: auto;
+}
+
+.udp-modal-inner {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 5% auto;
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+    animation: fadeIn 0.3s ease;
+}
+
+.udp-close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.udp-meta-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.udp-meta-table td {
+    border-bottom: 1px solid #ddd;
+    padding: 6px 8px;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+
+
+
+/* --- Admin Page Layout --- */
+.udp-admin-page {
+    margin-top: 30px;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.udp-page-title {
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.udp-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.udp-card-header h2 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.udp-subtitle {
+    margin-bottom: 20px;
+    color: #555;
+    font-size: 14px;
+}
+
+.udp-table-wrapper {
+    overflow-x: auto;
+}
+
+/* --- Table --- */
+.udp-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+}
+
+.udp-table th,
+.udp-table td {
+    text-align: left;
+    padding: 10px 12px;
+}
+
+.udp-table thead th {
+    background-color: #f6f7f7;
+    border-bottom: 2px solid #ddd;
+    font-weight: 600;
+}
+
+.udp-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.udp-table tbody tr:hover {
+    background-color: #f0f8ff;
+}
+
+/* --- View Button --- */
+.button.udp-view-user {
+    background: #0073aa;
+    border-color: #006799;
+    color: #fff;
+    transition: 0.2s;
+}
+
+.button.udp-view-user:hover {
+    background: #006799;
+}
+
+/* --- Modal --- */
+.udp-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    overflow: auto;
+}
+
+.udp-modal-inner {
+    background: #fff;
+    border-radius: 10px;
+    padding: 25px;
+    margin: 5% auto;
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+    animation: fadeIn 0.3s ease;
+}
+
+.udp-close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

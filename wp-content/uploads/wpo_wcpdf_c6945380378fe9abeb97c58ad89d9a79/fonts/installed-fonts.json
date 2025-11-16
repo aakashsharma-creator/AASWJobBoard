@@ -1,0 +1,26 @@
+{
+    "open sans": {
+        "normal": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/OpenSans-Normal",
+        "bold": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/OpenSans-Bold",
+        "italic": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/OpenSans-Italic",
+        "bold_italic": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/OpenSans-BoldItalic"
+    },
+    "segoe": {
+        "normal": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/Segoe-Normal",
+        "bold": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/Segoe-Bold",
+        "italic": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/Segoe-Italic",
+        "bold_italic": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/Segoe-BoldItalic"
+    },
+    "roboto slab": {
+        "normal": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/RobotoSlab-Normal",
+        "bold": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/RobotoSlab-Bold",
+        "italic": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/RobotoSlab-Italic",
+        "bold_italic": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/RobotoSlab-BoldItalic"
+    },
+    "currencies": {
+        "normal": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/currencies",
+        "bold": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/currencies",
+        "italic": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/currencies",
+        "bold_italic": "\/nas\/content\/live\/aaswjobstaging\/wp-content\/uploads\/wpo_wcpdf_c6945380378fe9abeb97c58ad89d9a79\/fonts\/currencies"
+    }
+}

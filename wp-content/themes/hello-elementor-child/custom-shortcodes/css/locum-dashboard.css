@@ -1,0 +1,1196 @@
+  <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 23px;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: normal;
+            justify-content: space-between;
+            gap: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-top: 4px solid transparent;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background-color: #e0f2fe;
+        }
+
+        .stat-icon-wrapper.red {
+            background-color: #fee2e2;
+        }
+
+        .stat-icon-wrapper svg {
+            width: 24px;
+            height: 24px;
+            color: #00688F;
+        }
+
+        .stat-icon-wrapper.red svg {
+            color: #dc2626;
+        }
+
+        .stat-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end !important;
+        }
+
+        .stat-label {
+            font-size: 16px !important;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .stat-number.blue-text {
+            color: #00688F;
+        }
+
+        .stat-number.red-text {
+            color: #dc2626;
+        }
+
+        /* Main Content */
+        .main-content-dashboard {
+            display: grid;
+            grid-template-columns: 2fr 1.4fr;
+            gap: 32px;
+        }
+
+        .left-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .right-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Cards */
+        .latest-jobs-card,
+        .profile-completion-card,
+        .quick-actions-card,
+        .support-card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Latest Jobs Card */
+        .latest-jobs-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .latest-jobs-card .card-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .view-all-link {
+            font-size: 14px;
+            font-weight: 600;
+            color: #00688F;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .view-all-link:hover {
+            color: #005a7a;
+        }
+
+        .job-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .job-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 12px;
+            border: 2px solid #808184;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgb(0, 0, 0, 0.05);
+        }
+
+        .job-item:last-child {
+            /* border-bottom: none; */
+        }
+
+        .job-item-left {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .job-logo {
+            width: 65px;
+            height: 40px;
+            border-radius: 6px;
+            object-fit: contain;
+            border: 1px solid #e2e8f0;
+            padding: 4px;
+            flex-shrink: 0;
+        }
+
+        .job-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .job-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .company-name {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .job-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .job-tag {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-weight: 500;
+            background-color: #e0f2fe;
+            color: #00688F;
+        }
+
+        .job-tag.experienced {
+            background-color: #f3e8ff;
+            color: #7c3aed;
+        }
+
+        .job-item-right {
+            flex-shrink: 0;
+            text-align: right;
+            margin-bottom: -60px;
+        }
+
+        .job-posted-time {
+            font-size: 13px;
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        /* Profile Completion Card */
+        .profile-completion-card {
+            display: flex;
+            align-items: normal;
+            gap: 10px;
+            background-color: #e0f2fe;
+            padding: 22px;
+            justify-content: space-between;
+        }
+
+        .profile-content {
+            flex: 1;
+            padding-right: 17px;
+        }
+
+        .profile-content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+
+        .profile-content p {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .profile-chart {
+            position: relative;
+            width: 120px;
+            height: 115px;
+            flex-shrink: 0;
+        }
+
+        .percentage-text {
+            position: absolute;
+            bottom: 10px;
+            left: 56%;
+            transform: translateX(-50%);
+            font-size: 23px;
+            font-weight: 800;
+            color: #2e2f30;
+            white-space: nowrap;
+            top: 36%;
+        }
+
+        .circular-chart {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .circle-bg {
+            stroke: #bfdbfe;
+            stroke-width: 2.5;
+        }
+
+        .circle {
+            stroke: #dc2626;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.5s ease-out;
+        }
+
+        .percentage {
+            fill: #1e293b;
+            font-family: 'Nunito Sans', sans-serif;
+            font-size: 0.5em;
+            font-weight: 800;
+            text-anchor: middle;
+        }
+
+        .completed-text {
+            position: absolute;
+            bottom: 10px;
+            left: 56%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            white-space: nowrap;
+            top: 64%;
+        }
+
+        /* Quick Actions Card */
+        .quick-actions-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: background-color 0.2s, border-color 0.2s;
+            font-size: 15px;
+        }
+
+        .action-btn:last-child {
+            margin-bottom: 0;
+        }
+
+        .action-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #334155 !important;
+        }
+
+        .action-btn:focus {
+            background: #f1f5f9 !important;
+            border-color: #cbd5e1;
+            color: #334155 !important;
+        }
+
+        .action-btn svg {
+            width: 20px;
+            height: 20px;
+            color: #64748b;
+            flex-shrink: 0;
+        }
+
+        /* Support Card */
+        .support-card {
+            background-color: #f0f9ff;
+        }
+
+        .support-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .support-header svg {
+            width: 24px;
+            height: 24px;
+            color: #00688F;
+            flex-shrink: 0;
+        }
+
+        .support-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .support-card p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .contact-support-btn {
+            background: #00688F;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 15px;
+        }
+
+        .contact-support-btn:hover {
+            background: #005a7a;
+        }
+
+        .contact-support-btn:focus {
+            background: #005a7a !important;
+        }
+
+        /* Responsive Design */
+
+        /* Large Desktop (1920px and above) */
+        @media (min-width: 1920px) {
+            .stats-section {
+                gap: 32px;
+                margin-bottom: 50px;
+            }
+
+            .stat-card {
+                padding: 32px;
+            }
+
+            .stat-icon-wrapper {
+                width: 56px;
+                height: 56px;
+            }
+
+            .stat-icon-wrapper svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            .stat-label {
+                font-size: 22px !important;
+            }
+
+            .stat-number {
+                font-size: 38px;
+            }
+
+            .main-content-dashboard {
+                gap: 40px;
+            }
+
+            .latest-jobs-card,
+            .profile-completion-card,
+            .quick-actions-card,
+            .support-card {
+                padding: 32px;
+            }
+
+            .latest-jobs-card .card-header h3,
+            .profile-content h3,
+            .quick-actions-card h3,
+            .support-header h3 {
+                font-size: 24px;
+            }
+
+            .view-all-link,
+            .profile-content p,
+            .action-btn,
+            .support-card p,
+            .contact-support-btn {
+                font-size: 16px;
+            }
+
+            .job-item-left {
+                gap: 20px;
+            }
+
+            .job-logo {
+                width: 65px;
+                height: 48px;
+            }
+
+            .job-title {
+                font-size: 18px;
+            }
+
+            .company-name {
+                font-size: 15px;
+            }
+
+            .job-tag {
+                font-size: 13px;
+                padding: 5px 12px;
+            }
+
+            .job-posted-time {
+                font-size: 14px;
+            }
+
+            .profile-chart {
+                width: 122px;
+                height: 122px;
+            }
+
+            .percentage {
+                font-size: 0.6em;
+            }
+
+            .completed-text {
+                font-size: 11px;
+            }
+
+            .action-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .support-header svg {
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        /* Desktop (1440px - 1919px) */
+        @media (min-width: 1440px) and (max-width: 1919px) {
+            .stats-section {
+                gap: 28px;
+            }
+
+            .stat-card {
+                padding: 28px;
+            }
+
+            .stat-icon-wrapper {
+                width: 52px;
+                height: 52px;
+            }
+
+            .stat-icon-wrapper svg {
+                width: 26px;
+                height: 26px;
+            }
+
+            .stat-label {
+                font-size: 20px !important;
+            }
+
+            .stat-number {
+                font-size: 34px;
+            }
+
+            .main-content-dashboard {
+                gap: 36px;
+            }
+
+            .latest-jobs-card,
+            .profile-completion-card,
+            .quick-actions-card,
+            .support-card {
+                padding: 28px;
+            }
+
+            .latest-jobs-card .card-header h3,
+            .profile-content h3,
+            .quick-actions-card h3,
+            .support-header h3 {
+                font-size: 22px;
+            }
+
+            .view-all-link,
+            .profile-content p,
+            .action-btn,
+            .support-card p,
+            .contact-support-btn {
+                font-size: 15px;
+            }
+
+            .job-logo {
+                width: 65px;
+                height: 44px;
+            }
+
+            .job-title {
+                font-size: 17px;
+            }
+
+            .company-name {
+                font-size: 14px;
+            }
+
+            .job-tag {
+                font-size: 12px;
+            }
+
+            .job-posted-time {
+                font-size: 13px;
+            }
+
+            .profile-chart {
+                width: 122px;
+                height: 122px;
+            }
+
+            .percentage {
+                font-size: 0.55em;
+            }
+
+            .completed-text {
+                font-size: 10.5px;
+            }
+
+            .action-btn svg {
+                width: 21px;
+                height: 21px;
+            }
+
+            .support-header svg {
+                width: 26px;
+                height: 26px;
+            }
+        }
+
+        /* Laptop (1200px - 1439px) */
+        @media (min-width: 1200px) and (max-width: 1439px) {
+            .stats-section {
+                gap: 24px;
+            }
+
+            .stat-card {
+                padding: 24px;
+            }
+
+            .stat-icon-wrapper {
+                width: 48px;
+                height: 48px;
+            }
+
+            .stat-icon-wrapper svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .stat-label {
+                font-size: 19px !important;
+            }
+
+            .stat-number {
+                font-size: 30px;
+            }
+
+            .main-content-dashboard {
+                gap: 32px;
+            }
+
+            .latest-jobs-card,
+            .profile-completion-card,
+            .quick-actions-card,
+            .support-card {
+                padding: 22px;
+            }
+
+            .latest-jobs-card .card-header h3,
+            .profile-content h3,
+            .quick-actions-card h3,
+            .support-header h3 {
+                font-size: 20px;
+            }
+
+            .view-all-link,
+            .profile-content p,
+            .action-btn,
+            .support-card p,
+            .contact-support-btn {
+                font-size: 14px;
+            }
+
+            .job-logo {
+                width: 65px;
+                height: 40px;
+            }
+
+            .job-title {
+                font-size: 16px;
+            }
+
+            .company-name {
+                font-size: 13px;
+            }
+
+            .job-tag {
+                font-size: 11px;
+                padding: 3px 8px;
+            }
+
+            .job-posted-time {
+                font-size: 12px;
+            }
+
+            .profile-chart {
+                width: 122px;
+                height: 122px;
+            }
+
+            .percentage {
+                font-size: 0.5em;
+            }
+
+            .completed-text {
+                font-size: 10px;
+            }
+
+            .action-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .support-header svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        /* Tablet Landscape (1024px - 1199px) */
+        @media (min-width: 1024px) and (max-width: 1199px) {
+            .stats-section {
+                gap: 20px;
+            }
+
+            .main-content-dashboard {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .right-section {
+                order: -1;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .stat-icon-wrapper {
+                width: 44px;
+                height: 44px;
+            }
+
+            .stat-icon-wrapper svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .stat-label {
+                font-size: 20px !important;
+            }
+
+            .stat-number {
+                font-size: 28px;
+            }
+
+            .latest-jobs-card,
+            .profile-completion-card,
+            .quick-actions-card,
+            .support-card {
+                padding: 20px;
+            }
+
+            .latest-jobs-card .card-header h3,
+            .profile-content h3,
+            .quick-actions-card h3,
+            .support-header h3 {
+                font-size: 18px;
+            }
+
+            .view-all-link,
+            .profile-content p,
+            .action-btn,
+            .support-card p,
+            .contact-support-btn {
+                font-size: 13px;
+            }
+
+            .job-logo {
+                width: 36px;
+                height: 36px;
+            }
+
+            .job-title {
+                font-size: 15px;
+            }
+
+            .company-name {
+                font-size: 12px;
+            }
+
+            .job-tag {
+                font-size: 10px;
+                padding: 2px 6px;
+            }
+
+            .job-posted-time {
+                font-size: 11px;
+            }
+
+            .profile-chart {
+                width: 122px;
+                height: 122px;
+            }
+
+            .percentage {
+                font-size: 0.45em;
+            }
+
+            .completed-text {
+                font-size: 10px;
+            }
+
+            .action-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .support-header svg {
+                width: 22px;
+                height: 22px;
+            }
+        }
+
+        /* Tablet Portrait (768px - 1023px) */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .stats-section {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-bottom: 28px;
+            }
+
+            .stat-card {
+                padding: 18px;
+            }
+
+            .stat-icon-wrapper {
+                width: 40px;
+                height: 40px;
+            }
+
+            .stat-icon-wrapper svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .stat-label {
+                font-size: 18px !important;
+            }
+
+            .stat-number {
+                font-size: 26px;
+            }
+
+            .main-content-dashboard {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .right-section {
+                order: -1;
+            }
+
+            .latest-jobs-card,
+            .profile-completion-card,
+            .quick-actions-card,
+            .support-card {
+                padding: 20px;
+            }
+
+            .latest-jobs-card .card-header h3,
+            .profile-content h3,
+            .quick-actions-card h3,
+            .support-header h3 {
+                font-size: 17px;
+            }
+
+            .view-all-link,
+            .profile-content p,
+            .action-btn,
+            .support-card p,
+            .contact-support-btn {
+                font-size: 12px;
+            }
+
+            .job-item-left {
+                gap: 12px;
+            }
+
+            .job-logo {
+                width: 32px;
+                height: 32px;
+            }
+
+            .job-title {
+                font-size: 14px;
+            }
+
+            .company-name {
+                font-size: 11px;
+            }
+
+            .job-tags {
+                gap: 6px;
+            }
+
+            .job-tag {
+                font-size: 9px;
+                padding: 2px 5px;
+            }
+
+            .job-posted-time {
+                font-size: 10px;
+            }
+
+            .profile-chart {
+                width: 122px;
+                height: 122px;
+            }
+
+            .percentage {
+                font-size: 0.4em;
+            }
+
+            .completed-text {
+                font-size: 10px;
+            }
+
+            .action-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .support-header svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        /* Mobile Large (480px - 767px) */
+        @media (min-width: 480px) and (max-width: 767px) {
+            .stats-section {
+                grid-template-columns: 1fr;
+                gap: 14px;
+                margin-bottom: 24px;
+            }
+
+            .stat-card {
+                padding: 16px;
+                flex-direction: row;
+                text-align: center;
+                gap: 12px;
+            }
+
+            .stat-icon-wrapper {
+                width: 36px;
+                height: 36px;
+            }
+
+            .stat-icon-wrapper svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .stat-label {
+                font-size: 13px !important;
+            }
+
+            .stat-number {
+                font-size: 24px;
+            }
+
+            .main-content-dashboard {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .right-section {
+                order: -1;
+            }
+
+            .latest-jobs-card,
+            .profile-completion-card,
+            .quick-actions-card,
+            .support-card {
+                padding: 18px;
+            }
+
+            .latest-jobs-card .card-header h3,
+            .profile-content h3,
+            .quick-actions-card h3,
+            .support-header h3 {
+                font-size: 16px;
+            }
+
+            .view-all-link,
+            .profile-content p,
+            .action-btn,
+            .support-card p,
+            .contact-support-btn {
+                font-size: 12px;
+            }
+
+            .job-item-left {
+                flex-direction: row;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .job-logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .job-title {
+                font-size: 15px;
+            }
+
+            .company-name {
+                font-size: 12px;
+            }
+
+            .job-tags {
+                margin-top: 4px;
+            }
+
+            .job-tag {
+                font-size: 9px;
+                padding: 2px 6px;
+            }
+
+            .job-posted-time {
+                font-size: 11px;
+            }
+
+            .profile-chart {
+                width: 122px;
+                height: 122px;
+            }
+
+            .percentage {
+                font-size: 0.35em;
+            }
+
+            .completed-text {
+                font-size: 10px;
+                bottom: 5px;
+            }
+
+            .action-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .support-header svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        /* Mobile Small (< 480px) */
+        @media (max-width: 479px) {
+            .stats-section {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+
+            .stat-card {
+                padding: 14px;
+                flex-direction: row;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .stat-icon-wrapper {
+                width: 32px;
+                height: 32px;
+            }
+
+            .stat-icon-wrapper svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .stat-label {
+                font-size: 12px !important;
+            }
+
+            .stat-number {
+                font-size: 22px;
+            }
+
+            .main-content-dashboard {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .right-section {
+                order: -1;
+            }
+
+            .latest-jobs-card,
+            .profile-completion-card,
+            .quick-actions-card,
+            .support-card {
+                padding: 16px;
+            }
+
+            .latest-jobs-card .card-header h3,
+            .profile-content h3,
+            .quick-actions-card h3,
+            .support-header h3 {
+                font-size: 15px;
+            }
+
+            .view-all-link,
+            .profile-content p,
+            .action-btn,
+            .support-card p,
+            .contact-support-btn {
+                font-size: 11px;
+            }
+
+            .job-item-left {
+                flex-direction: row;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .job-logo {
+                width: 36px;
+                height: 36px;
+            }
+
+            .job-title {
+                font-size: 14px;
+            }
+
+            .company-name {
+                font-size: 11px;
+            }
+
+            .job-tags {
+                margin-top: 2px;
+                gap: 4px;
+            }
+
+            .job-tag {
+                font-size: 8px;
+                padding: 1px 4px;
+            }
+
+            .job-posted-time {
+                font-size: 10px;
+            }
+
+            .profile-chart {
+                width: 122px;
+                height: 122px;
+            }
+
+            .percentage {
+                font-size: 0.3em;
+            }
+
+            .completed-text {
+                font-size: 10px;
+                bottom: 3px;
+            }
+
+            .action-btn svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            .support-header svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+    </style>

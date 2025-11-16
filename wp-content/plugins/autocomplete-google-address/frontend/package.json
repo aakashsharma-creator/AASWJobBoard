@@ -1,0 +1,22 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/google.maps": "^3.58.1",
+    "@types/jquery": "^3.5.32",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "jquery": "^3.7.1",
+    "react-modal": "^3.16.1",
+    "vite": "^5.4.11"
+  }
+}

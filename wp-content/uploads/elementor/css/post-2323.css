@@ -1,0 +1,80 @@
+.elementor-2323 .elementor-element.elementor-element-4d8ed4ea{--display:flex;--flex-direction:column;--container-widget-width:100%;--container-widget-height:initial;--container-widget-flex-grow:0;--container-widget-align-self:initial;--flex-wrap-mobile:wrap;}.elementor-2323 .elementor-element.elementor-element-6f20ea27{--display:flex;--align-items:center;--container-widget-width:calc( ( 1 - var( --container-widget-flex-grow ) ) * 100% );}.elementor-widget-image .widget-image-caption{color:var( --e-global-color-text );font-family:var( --e-global-typography-text-font-family ), Sans-serif;font-weight:var( --e-global-typography-text-font-weight );}.elementor-2323 .elementor-element.elementor-element-50885f61{width:var( --container-widget-width, 268px );max-width:268px;--container-widget-width:268px;--container-widget-flex-grow:0;}.elementor-2323 .elementor-element.elementor-element-50885f61.elementor-element{--flex-grow:0;--flex-shrink:0;}.elementor-2323 .elementor-element.elementor-element-50885f61 img{width:268px;height:107px;object-fit:fill;}.elementor-widget-heading .elementor-heading-title{font-family:var( --e-global-typography-primary-font-family ), Sans-serif;font-weight:var( --e-global-typography-primary-font-weight );color:var( --e-global-color-primary );}.elementor-2323 .elementor-element.elementor-element-1beca3d1{width:var( --container-widget-width, 466px );max-width:466px;margin:-3px -3px calc(var(--kit-widget-spacing, 0px) + -3px) -3px;--container-widget-width:466px;--container-widget-flex-grow:0;text-align:center;}.elementor-2323 .elementor-element.elementor-element-1beca3d1 .elementor-heading-title{font-family:"Nunito Sans", Sans-serif;font-size:32px;font-weight:700;line-height:120%;letter-spacing:0px;color:#231F20;}.elementor-2323 .elementor-element.elementor-element-2eb540b7{--display:flex;--flex-direction:row;--container-widget-width:calc( ( 1 - var( --container-widget-flex-grow ) ) * 100% );--container-widget-height:100%;--container-widget-flex-grow:1;--container-widget-align-self:stretch;--flex-wrap-mobile:wrap;--justify-content:center;--align-items:center;--gap:5px 5px;--row-gap:5px;--column-gap:5px;--margin-top:17px;--margin-bottom:0px;--margin-left:0px;--margin-right:0px;}.elementor-widget-button .elementor-button{background-color:var( --e-global-color-accent );font-family:var( --e-global-typography-accent-font-family ), Sans-serif;font-weight:var( --e-global-typography-accent-font-weight );}.elementor-2323 .elementor-element.elementor-element-7cbd55e8 .elementor-button{background-color:#FFFFFF;font-family:"Nunito Sans", Sans-serif;font-size:18px;font-weight:700;line-height:100%;letter-spacing:0%;text-shadow:0px 0px 10px rgba(0,0,0,0.3);fill:#00688F;color:#00688F;border-style:none;border-radius:10px 10px 10px 10px;}.elementor-2323 .elementor-element.elementor-element-7cbd55e8{width:var( --container-widget-width, 187px );max-width:187px;--container-widget-width:187px;--container-widget-flex-grow:0;}.elementor-2323 .elementor-element.elementor-element-7cbd55e8.elementor-element{--align-self:center;}.elementor-2323 .elementor-element.elementor-element-fb65951 .elementor-button{background-color:#FFFFFF38;font-family:"Nunito Sans", Sans-serif;font-size:18px;font-weight:700;line-height:100%;letter-spacing:0%;fill:#00688F;color:#00688F;border-radius:10px 10px 10px 10px;}.elementor-2323 .elementor-element.elementor-element-fb65951{width:var( --container-widget-width, 177px );max-width:177px;--container-widget-width:177px;--container-widget-flex-grow:0;}.elementor-2323 .elementor-element.elementor-element-fb65951.elementor-element{--align-self:center;}.elementor-2323 .elementor-element.elementor-element-6dafbb63{--display:flex;--margin-top:-8px;--margin-bottom:-8px;--margin-left:-8px;--margin-right:-8px;}.elementor-2323 .elementor-element.elementor-element-7816ac78{margin:22px 0px calc(var(--kit-widget-spacing, 0px) + 0px) 0px;}.elementor-2323 .elementor-element.elementor-element-7816ac78 img{width:460px;height:60px;}.elementor-widget-text-editor{font-family:var( --e-global-typography-text-font-family ), Sans-serif;font-weight:var( --e-global-typography-text-font-weight );color:var( --e-global-color-text );}.elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:var( --e-global-color-primary );}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap, .elementor-widget-text-editor.elementor-drop-cap-view-default .elementor-drop-cap{color:var( --e-global-color-primary );border-color:var( --e-global-color-primary );}.elementor-2323 .elementor-element.elementor-element-10ae08d6{font-family:"Nunito Sans", Sans-serif;font-size:16px;font-weight:400;line-height:160%;}#elementor-popup-modal-2323 .dialog-widget-content{animation-duration:1.2s;background-color:#FFFFFF;border-radius:30px 30px 30px 30px;box-shadow:2px 8px 23px 3px rgba(0,0,0,0.2);}#elementor-popup-modal-2323{background-color:rgba(0,0,0,.8);justify-content:center;align-items:center;pointer-events:all;}#elementor-popup-modal-2323 .dialog-message{width:684px;height:534px;align-items:flex-start;}#elementor-popup-modal-2323 .dialog-close-button{display:flex;}@media(min-width:768px){.elementor-2323 .elementor-element.elementor-element-2eb540b7{--content-width:1140px;}}/* Start custom CSS *//* Popup container */
+.elementor-popup-modal {
+  border-radius: 20px !important;
+  box-shadow: 0 4px 25px rgba(0,0,0,0.15);
+  background: #fff;
+  padding: 30px;
+}
+
+/* Heading */
+.elementor-popup-modal h2, 
+.elementor-popup-modal h3 {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+/* Role buttons */
+.role-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin: 0 10px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.role-btn.employer {
+  background: #0077c8;
+  color: #fff;
+}
+
+.role-btn.locum {
+  background: transparent;
+  border: 2px solid #0077c8;
+  color: #0077c8;
+}
+
+.role-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Continue button */
+.continue-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  background: #0077c8;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+.continue-btn:hover {
+  background: #005f9e;
+}
+
+/* Sign In link */
+.signin-text {
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+
+.signin-text a {
+  color: #0077c8;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.signin-text a:hover {
+  text-decoration: underline;
+}/* End custom CSS */

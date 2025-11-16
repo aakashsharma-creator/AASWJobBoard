@@ -1,0 +1,83 @@
+.elementor-3602 .elementor-element.elementor-element-4d8ed4ea{--display:flex;--min-height:0px;--flex-direction:column;--container-widget-width:100%;--container-widget-height:initial;--container-widget-flex-grow:0;--container-widget-align-self:initial;--flex-wrap-mobile:wrap;}.elementor-3602 .elementor-element.elementor-element-6f20ea27{--display:flex;--align-items:center;--container-widget-width:calc( ( 1 - var( --container-widget-flex-grow ) ) * 100% );}.elementor-widget-image .widget-image-caption{color:var( --e-global-color-text );font-family:var( --e-global-typography-text-font-family ), Sans-serif;font-weight:var( --e-global-typography-text-font-weight );}.elementor-3602 .elementor-element.elementor-element-50885f61{width:var( --container-widget-width, 268px );max-width:268px;--container-widget-width:268px;--container-widget-flex-grow:0;}.elementor-3602 .elementor-element.elementor-element-50885f61.elementor-element{--flex-grow:0;--flex-shrink:0;}.elementor-3602 .elementor-element.elementor-element-50885f61 img{width:186px;}.elementor-3602 .elementor-element.elementor-element-6dafbb63{--display:flex;--margin-top:-8px;--margin-bottom:-8px;--margin-left:-8px;--margin-right:-8px;}.elementor-3602 .elementor-element.elementor-element-b86c048{--display:flex;--flex-direction:row;--container-widget-width:calc( ( 1 - var( --container-widget-flex-grow ) ) * 100% );--container-widget-height:100%;--container-widget-flex-grow:1;--container-widget-align-self:stretch;--flex-wrap-mobile:wrap;--justify-content:center;--align-items:center;--gap:0px 0px;--row-gap:0px;--column-gap:0px;--flex-wrap:wrap;}.elementor-3602 .elementor-element.elementor-element-b86c048.e-con{--flex-grow:0;--flex-shrink:0;}.elementor-widget-heading .elementor-heading-title{font-family:var( --e-global-typography-primary-font-family ), Sans-serif;font-weight:var( --e-global-typography-primary-font-weight );color:var( --e-global-color-primary );}.elementor-3602 .elementor-element.elementor-element-4caefbb{margin:0px 0px calc(var(--kit-widget-spacing, 0px) + 0px) 0px;text-align:justify;}.elementor-3602 .elementor-element.elementor-element-4caefbb .elementor-heading-title{font-family:"Nunito Sans", Sans-serif;font-size:16px;font-weight:400;color:#202430;}.elementor-widget-button .elementor-button{background-color:var( --e-global-color-accent );font-family:var( --e-global-typography-accent-font-family ), Sans-serif;font-weight:var( --e-global-typography-accent-font-weight );}.elementor-3602 .elementor-element.elementor-element-7a551b1 .elementor-button{background-color:#FFFFFF;text-shadow:0px 0px 10px rgba(0,0,0,0.3);fill:#00688F;color:#00688F;border-style:none;padding:4px 4px 4px 4px;}.elementor-3602 .elementor-element.elementor-element-7a551b1{margin:1px 1px calc(var(--kit-widget-spacing, 0px) + 1px) 1px;padding:0px 0px 0px 0px;}.elementor-3602 .elementor-element.elementor-element-7a551b1.elementor-element{--align-self:center;--flex-grow:0;--flex-shrink:0;}#elementor-popup-modal-3602 .dialog-widget-content{animation-duration:1.2s;background-color:#FFFFFF;border-radius:30px 30px 30px 30px;box-shadow:2px 8px 23px 3px rgba(0,0,0,0.2);}#elementor-popup-modal-3602{background-color:rgba(0,0,0,.8);justify-content:center;align-items:center;pointer-events:all;}#elementor-popup-modal-3602 .dialog-message{width:684px;height:1000px;align-items:flex-start;}#elementor-popup-modal-3602 .dialog-close-button{display:flex;}@media(min-width:768px){.elementor-3602 .elementor-element.elementor-element-b86c048{--width:100%;}}/* Start custom CSS for button, class: .elementor-element-7a551b1 */.elementor-3602 .elementor-element.elementor-element-7a551b1 {
+  cursor: pointer !important;
+}/* End custom CSS */
+/* Start custom CSS */.elementor-popup-modal {
+  border-radius: 20px !important;
+  box-shadow: 0 4px 25px rgba(0,0,0,0.15);
+  background: #fff;
+  padding: 30px;
+  
+}
+
+/* Heading */
+.elementor-popup-modal h2, 
+.elementor-popup-modal h3 {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+/* Role buttons */
+.role-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin: 0 10px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.role-btn.employer {
+  background: #0077c8;
+  color: #fff;
+}
+
+.role-btn.locum {
+  background: transparent;
+  border: 2px solid #0077c8;
+  color: #0077c8;
+}
+
+.role-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Continue button */
+.continue-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  background: #0077c8;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+.continue-btn:hover {
+  background: #005f9e;
+}
+
+/* Sign In link */
+.signin-text {
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+
+.signin-text a {
+  color: #0077c8;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.signin-text a:hover {
+  text-decoration: underline;
+}/* End custom CSS */

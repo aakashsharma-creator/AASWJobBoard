@@ -1,0 +1,683 @@
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    .page {
+      /*max-width: 1200px;*/
+      margin: auto;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .page-header-joblist {
+      background: #fff;
+      border: 1px solid #e5dcdc;
+      padding: 23px;
+      border-radius: 13px;
+    }
+
+    .page-header h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #1a1a1a;
+    }
+
+    .date-range {
+      border: 1px solid #dcdfe6;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: #444;
+      background: #fff;
+    }
+
+    .btn-primary {
+      background: #00688F;
+      border: none;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-primary:hover {
+      background: #0056b3;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .card-header h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .btn-filter {
+      border: 1px solid #dcdfe6;
+      background: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #444;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid #e6e8ef;
+    }
+
+    th {
+      font-weight: 600;
+      color: #444;
+      background: #fafbfc;
+    }
+
+    /* Status pills */
+    .status {
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .status.open {
+      background: #e6f9ed;
+      color: #1f9254;
+      border: 1px solid #a6e1c1;
+    }
+
+    .status.publish {
+      background: #e6f9ed;
+      color: #1f9254;
+      border: 1px solid #a6e1c1;
+      font-family: Arial, sans-serif;
+    }
+
+    .status.pending {
+      background: #C2EEFE;
+      color: #129fc1;
+      border: 1px solid #C2EEFE;
+    }
+	
+	
+	.status.expired {
+    background: #e31d5b;
+    color: #f7f7f7;
+    border: 1px solid #e31d5b;
+    }
+
+
+    .status.closed {
+      background: #fdecea;
+      color: #b71c1c;
+      border: 1px solid #f5c6c6;
+    }
+
+    .status.draft {
+      background: #fff4e5;
+      color: #8a6d3b;
+      border: 1px solid #f0dca4;
+    }
+
+    /* Job type tags */
+    .tag {
+      padding: 4px 15px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      color: #fff;
+      display: inline-block;
+    }
+
+    .tag.fulltime {
+      color: #369ADD;
+      background: #99DAF380;
+      border: 1px solid #369ADD;
+    }
+
+    .tag.consultant {
+      color: #d78e31;
+      background: #fde5c6;
+      border: 1px solid #d78e31;
+    }
+
+    .tag.parttime {
+      color: #AB233E;
+      background: #A324411F;
+      border: 1px solid #AB233E;
+    }
+
+    .tag.freelance {
+      color: #e95317;
+      background: #cf91311f;
+      border: 1px solid #e95317;
+    }
+
+    .tag.locum\/contractft {
+      color: #8E44AD;
+      /* purple */
+      background: #F4E6FA;
+      border: 1px solid #8E44AD;
+    }
+
+    /* Locum/Contract PT */
+    .tag.locum\/contractpt {
+      color: #D35400;
+      /* burnt orange */
+      background: #FDEBDD;
+      border: 1px solid #D35400;
+    }
+
+    /* Permanant (typo kept same as your slug) */
+    .tag.permanant {
+      color: #2C3E50;
+      /* dark gray-blue */
+      background: #EAECEE;
+      border: 1px solid #2C3E50;
+    }
+
+    /* Permanent Full Time */
+    .tag.permanentfulltime {
+      color: #27AE60;
+      /* green */
+      background: #E8F8F1;
+      border: 1px solid #27AE60;
+    }
+
+    /* Permanent Part Time */
+    .tag.permanentparttime {
+      color: #C0392B;
+      /* red */
+      background: #FDEDEC;
+      border: 1px solid #C0392B;
+    }
+
+    table td {
+      color: #231F20;
+    }
+
+    table td,
+    table th {
+      border: 0px solid hsla(0, 0%, 50%, .502);
+      font-size: 14px;
+      font-weight: normal;
+    }
+
+    .job-subtitle {
+      margin: 4px 0 0;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .pagination {
+      display: block;
+    }
+
+    table.dataTable {
+      padding-top: 16px;
+    }
+
+    .action-menu {
+      position: relative;
+      display: inline-block;
+    }
+
+    .action-dropdown {
+      display: none;
+      /* hide by default */
+      position: absolute;
+      right: 0;
+      top: 90%;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
+      min-width: 160px;
+      z-index: 999;
+      padding: 6px 0;
+    }
+
+    /* When JS adds 'show', make it visible */
+    .action-dropdown.show {
+      display: block;
+    }
+
+    /* Default styles */
+    .action-dropdown button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 15px;
+      background: none;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+      color: #333;
+      transition: all 0.2s ease;
+      border-radius: 6px;
+    }
+
+    /* Edit hover */
+    .action-dropdown .action-edit:hover {
+      background: #00688F;
+      /* blue */
+      color: #fff;
+    }
+
+    /* View hover */
+    .action-dropdown .action-view:hover {
+      background: #00688F;
+      /* dark gray */
+      color: #fff;
+    }
+
+    /* Duplicate hover */
+    .action-dropdown .action-duplicate:hover {
+      background: #00688F;
+      /* orange */
+      color: #fff;
+    }
+
+    /* Renew hover */
+    .action-dropdown .action-renew:hover {
+      background: #00688F;
+      /* green */
+      color: #fff;
+    }
+
+    /* Delete hover */
+    .action-dropdown .action-delete:hover {
+      background: #dc3545;
+      /* red */
+      color: #fff;
+    }
+
+    .action-menu .action-toggle {
+      background: none;
+      border: none;
+      font-size: 22px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 50%;
+      color: #555;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .action-menu .action-toggle:hover {
+      background: #f0f0f0;
+      color: #000;
+    }
+
+    /* Remove button look from dropdown items */
+    .action-dropdown button {
+      background: none;
+      border: none;
+      outline: none;
+    }
+
+    /* Optional: icon alignment fix */
+    .action-dropdown i {
+      font-size: 14px;
+    }
+
+    table.dataTable tbody th,
+    table.dataTable tbody td {
+      padding: 8px 7px;
+    }
+
+    /* Confirm Dialog Header */
+    /* Center footer buttons */
+    .ajs-dialog .ajs-footer {
+      text-align: center !important;
+      background: #fff !important;
+      border-top: none !important;
+      padding: 0px 10px;
+    }
+
+    /* Buttons */
+    .ajs-dialog .ajs-button {
+      min-width: 120px;
+
+      padding: 8px 16px !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      margin: 0 6px;
+    }
+
+    /* OK Button (Delete) */
+    .ajs-dialog .ajs-ok {
+      background: #A32441 !important;
+      color: #ffffff !important;
+      border: none !important;
+    }
+
+    .ajs-dialog .ajs-ok:hover {
+      background: #A32441 !important;
+    }
+
+    /* Cancel Button */
+    .ajs-dialog .ajs-cancel {
+      background: #AA233F33 !important;
+      color: #A32441 !important;
+      border: none !important;
+    }
+
+    .ajs-dialog .ajs-cancel:hover {
+      background: 2px #AA233F33 !important;
+    }
+
+    .ajs-dialog .ajs-header {
+      display: none !important;
+    }
+
+
+    /* Bigger warning icon */
+
+    .action-icon {
+      width: 18px;
+      /* adjust size */
+      height: 18px;
+      /* keep consistent */
+      object-fit: contain;
+      /* prevent stretching */
+      vertical-align: middle;
+      /* align with text */
+      margin-right: 5px;
+      /* spacing before text */
+    }
+
+    /* Make DataTable responsive and full width */
+    table.job-list {
+      width: 100% !important;
+      table-layout: auto !important;
+    }
+
+    /* Scrollable table wrapper */
+    .table-responsive {
+
+      width: 100%;
+    }
+
+    /* Increase table width */
+    table.list-job {
+      min-width: 1100px;
+      /* adjust width as needed */
+      width: 100%;
+      table-layout: fixed;
+      /* helps with consistent column sizing */
+    }
+
+
+    /* Responsive adjustments */
+    @media (max-width: 1400px) {
+
+      .table-responsive {
+        overflow-x: auto;
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+      table.list-job {
+        min-width: 1000px;
+      }
+
+      .table-responsive {
+        overflow-x: auto;
+      }
+    }
+
+    @media (max-width: 992px) {
+      table.list-job {
+        min-width: 900px;
+      }
+
+      .table-responsive {
+        overflow-x: auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      table.list-job {
+        min-width: 800px;
+      }
+
+      .table-responsive {
+        overflow-x: auto;
+      }
+
+    }
+
+    /* Optional: make columns ellipsis on small screens */
+    table.list-job td,
+    table.list-job th {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Job Title column */
+    #DataTables_Table_0 th:nth-child(1),
+    #DataTables_Table_0 td:nth-child(1) {
+      width: 260px;
+      max-width: 260px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    /* Status column */
+    #DataTables_Table_0 th:nth-child(2),
+    #DataTables_Table_0 td:nth-child(2) {
+      width: 100px;
+      max-width: 100px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    /* Date Posted column */
+    #DataTables_Table_0 th:nth-child(3),
+    #DataTables_Table_0 td:nth-child(3) {
+      width: 120px;
+      max-width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    /* Expiry Date column */
+    #DataTables_Table_0 th:nth-child(4),
+    #DataTables_Table_0 td:nth-child(4) {
+      width: 120px;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    /* Job Type column */
+    #DataTables_Table_0 th:nth-child(5),
+    #DataTables_Table_0 td:nth-child(5) {
+      width: 45px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    /* Views column */
+    #DataTables_Table_0 th:nth-child(6),
+    #DataTables_Table_0 td:nth-child(6) {
+      width: 40px;
+      max-width: 40px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    /* Category column */
+    #DataTables_Table_0 th:nth-child(7),
+    #DataTables_Table_0 td:nth-child(7) {
+      width: 150px;
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    /* Actions column */
+    #DataTables_Table_0 th:nth-child(8),
+    #DataTables_Table_0 td:nth-child(8) {
+      width: 150px;
+      max-width: 150px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+
+    }
+
+    .dataTables_wrapper {
+      width: 100% !important;
+    }
+
+
+    .dataTables_scrollBody {
+      width: 100% !important;
+    }
+
+    .alertify .ajs-dialog {
+      min-height: 265px !important;
+      min-width: 545px !important;
+      border-radius: 21px !important;
+    }
+
+    .alertify .ajs-footer .ajs-buttons.ajs-primary {
+      text-align: center !important;
+    }
+
+    .alertify .ajs-footer .ajs-buttons .ajs-button {
+      min-width: 120px !important;
+    }
+
+    .alertify .ajs-commands button.ajs-close {
+      width: 30px !important;
+      height: 30px !important;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%23000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>') !important;
+      background-size: contain !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+    }
+
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #9fbdd1ff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* CSS (optional, add for drop-up styling or animation)  */
+
+    .floating-dropdown {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      min-width: 160px;
+      max-width: 160px;
+      padding: 6px 0;
+      transition: all 0.2s ease;
+      overflow-y: auto;
+      /* Add vertical scroll if content overflows */
+      max-height: 300px;
+      /* Limit maximum height */
+    }
+
+    .floating-dropdown.drop-up {
+      transform-origin: bottom;
+    }
+
+    .floating-dropdown:not(.drop-up) {
+      transform-origin: top;
+    }
+
+    /* Ensure buttons don't exceed dropdown width */
+    .floating-dropdown button {
+      width: 100%;
+      padding: 10px 15px;
+      box-sizing: border-box;
+      /* Include padding in width calculation */
+      white-space: nowrap;
+      /* Prevent text wrapping */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      /* Add ellipsis if text overflows */
+    }

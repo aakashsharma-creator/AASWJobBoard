@@ -1,0 +1,208 @@
+# Copyright (C) 2025 WPMU DEV
+# This file is distributed under the same license as the Forminator Geolocation Add-on package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Forminator Geolocation Add-on 1.5.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/build\n"
+"POT-Creation-Date: 2025-10-06 14:07:19+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2025-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 1.0.3\n"
+
+#: forminator-geolocation.php:122 forminator-geolocation.php:147
+#. translators: 1. Open B tag. 2. Close B tag. 3. Open A tag. 4. Close A tag.
+#. translators: 1. Open H1 tag. 2. Close H1 tag and open P tag. 3. Open A tag.
+#. 4. Close A tag. 5. Close P tag.
+msgid ""
+"%1$sForminator Geolocation%2$s Add-on requires the latest version of "
+"Forminator Pro in order to work. Please install and activate the latest "
+"version %3$shere%4$s"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:89
+#. translators: 1. Open link tag. 2. Close link tag.
+msgid ""
+"User’s Geolocation is disabled for this form. You can enable it in %1$sForm "
+"settings > User Geolocation%2$s."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:97
+#. translators: 1. Open link tag. 2. Close link tag.
+msgid ""
+"Failed to connect to the Google Maps API. Please ensure you have entered a "
+"valid API key in the %1$sSettings page%2$s."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:110
+msgid ""
+"No location data is available for this form yet. You can check back when "
+"your form has new submissions."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:216
+msgid "Locations"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:217
+msgid "Submissions"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:241
+msgid "State / Province"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:371
+#: library/class-forminator-geolocation-admin.php:577
+msgid "Geolocation"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:382
+#. translators: 1. Open link tag. 2. Close link tag. 3. Open link tag for map
+#. id.
+msgid ""
+"Set up Geolocation to gather your users' location and add auto-completion "
+"to address field(s). Find your %1$sGoogle Maps API key %2$s and %3$sMap "
+"ID%2$s."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:395
+#. translators: 1. Open link tag. 2. Close link tag. 3. Open link tag for map
+#. id.
+msgid ""
+"Set up Geolocation to gather your users' location and add auto-completion "
+"to address field(s). Find your %1$sGoogle Maps API key %2$s."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:407
+#. translators: 1. Open link tag. 2. Close link tag.
+msgid ""
+"Enter your Map ID to apply custom Cloud Map Styles. If left blank, the "
+"default Google Map style will be applied. %1$sLearn how to find your Map ID "
+"%2$s."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:436
+#. Translators: 1. Opening <strong> tag, 2. closing <strong> tag.
+msgid "%1$sGeolocation Add-on configuration%2$s successfully saved."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:475
+msgid "Save"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:541
+msgid "Google API key is invalid"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:588
+#: library/class-forminator-geolocation-admin.php:677
+msgid "Google Maps API"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:608
+#: library/class-forminator-geolocation-admin.php:702
+msgid "Map ID"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:628
+msgid "Default Form Settings"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:649
+msgid "Geolocation settings"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:653
+msgid "Save Settings"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:681
+msgid "Enter Google Maps API"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:686
+msgid "Invalid Google Maps API Key."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:706
+msgid "Enter Map ID"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:711
+msgid "Invalid Google Map ID."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:734
+msgid "Enable Geolocation for all new forms by default"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:737
+msgid "You can disable this option for each form in the form settings."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:844
+msgid "User's Location"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:852
+msgid "Lat/Long"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:855
+msgid "View Map"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:882
+msgid ""
+"User’s Geolocation is automatically fetched based on form’s submitter’s "
+"current location."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:905
+msgid "Could not fetch user’s Geolocation."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:916
+#. translators: 1. Open link tag. 2. Close link tag.
+msgid "User Geolocation data was anonymized per your %1$sSubmissions Settings%2$s."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:921
+msgid "User Geolocation data was anonymized per your Submissions Settings."
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:972
+msgid "User’s Geolocation"
+msgstr ""
+
+#: library/class-forminator-geolocation-admin.php:989
+msgid ""
+"Oops! We need access to your location to submit the form. Please allow "
+"location access to continue."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Forminator Geolocation Add-on"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://wpmudev.com/project/forminator-pro/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Collect your form submitter’s location information, and provide address "
+"auto-completion using Google Maps API."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "WPMU DEV"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://wpmudev.com"
+msgstr ""
